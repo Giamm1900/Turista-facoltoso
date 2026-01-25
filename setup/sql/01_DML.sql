@@ -31,3 +31,61 @@ SELECT * FROM host;
 SELECT * FROM abitazione;
 SELECT * FROM prenotazione;
 SELECT * FROM feedback;
+
+-- Operazioni Richiesta dall'app
+--1 Ottenere le abitazioni corrispondenti ad un certo codice host
+
+SELECT * 
+FROM abitazione a WHERE id = ?
+
+-- 2 Ottenere l'ultima prenotazione dato un id utente
+
+SELECT * 
+FROM prenotazione p
+WHERE utente_id = ?
+ORDER BY created_at
+LIMIT 1
+
+--3 Ottenere l'abitazione più gettonata nell'ultimo mese
+
+SELECT a.*, COUNT(p.id) as num_prenotazioni
+FROM public.abitazione a
+JOIN public.prenotazione p ON a.id = p.abitazione_id
+WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month'
+GROUP BY a.id
+ORDER BY num_prenotazioni DESC
+LIMIT 1;
+
+--4 Ottenere gli host con più prenotazioni nell'ultimo mese
+
+SELECT h.id, u.nome_user, u.cognome, COUNT(p.id) as totale_prenotazioni
+FROM public.host h
+JOIN public.utente u ON h.id = u.id
+JOIN public.abitazione a ON h.id = a.id_host
+JOIN public.prenotazione p ON a.id = p.abitazione_id
+WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month'
+GROUP BY h.id, u.nome_user, u.cognome
+ORDER BY totale_prenotazioni DESC;
+
+-- 5 Ottenere tutti i super-host
+
+SELECT u.nome_user, u.cognome, sh.totale_prenotazioni
+FROM super_host sh
+JOIN public.utente u ON sh.host_id = u.id;
+
+--6 Ottenere i 5 utenti con più giorni prenotati nell'ultimo mese
+SELECT 
+    u.id, 
+    u.nome_user, 
+    SUM(p.data_fine - p.data_inizio) AS totale_giorni
+FROM public.utente u
+JOIN public.prenotazione p ON u.id = p.utente_id
+WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month'
+GROUP BY u.id
+ORDER BY totale_giorni DESC
+LIMIT 5;
+
+--7 Ottenere il numero medio di posti letto calcolato
+-- in base a tutte le abitazioni caricate dagli host
+SELECT AVG(n_posti_letto)::NUMERIC(10,2) AS media_posti_letto
+FROM public.abitazione;

@@ -45,6 +45,7 @@ CREATE TABLE public.prenotazione (
     data_fine DATE NOT NULL,
     utente_id INTEGER NOT NULL,
     abitazione_id INTEGER NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT(NOW)
     CONSTRAINT fk_prenotazione_utente
         FOREIGN KEY (utente_id)
         REFERENCES utente(id)
@@ -80,7 +81,7 @@ SELECT
     h.id AS host_id,
     COUNT(p.id) AS totale_prenotazioni
 FROM host h
-JOIN abitazione a ON a.host_id = h.id
+JOIN abitazione a ON a.id_host = h.id
 JOIN prenotazione p ON p.abitazione_id = a.id
 GROUP BY h.id
 HAVING COUNT(p.id) >= 100;
