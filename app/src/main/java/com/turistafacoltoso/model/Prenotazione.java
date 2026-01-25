@@ -17,4 +17,12 @@ public class Prenotazione {
     private int utenteId;
     private int abitazioneId;
     private LocalDateTime createdAt;
+    public Prenotazione(LocalDate dataInizio, LocalDate dataFine, int utenteId, int abitazioneId,
+            LocalDateTime createdAt) {
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+        this.utenteId = utenteId;
+        this.abitazioneId = abitazioneId;
+        this.createdAt = createdAt;
+    }
 }

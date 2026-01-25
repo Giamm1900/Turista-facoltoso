@@ -20,4 +20,17 @@ public class Abitazione {
     private LocalDate disponibilitaInizio;
     private LocalDate disponibilitaFine;
     private int idHost;
+    public Abitazione(String nomeAbitazione, String indirizzoAbitazione, int nLocali, int nPostiLetto,
+            BigDecimal prezzoPerNotte, LocalDate disponibilitaInizio, LocalDate disponibilitaFine, int idHost) {
+        this.nomeAbitazione = nomeAbitazione;
+        this.indirizzoAbitazione = indirizzoAbitazione;
+        this.nLocali = nLocali;
+        this.nPostiLetto = nPostiLetto;
+        this.prezzoPerNotte = prezzoPerNotte;
+        this.disponibilitaInizio = disponibilitaInizio;
+        this.disponibilitaFine = disponibilitaFine;
+        this.idHost = idHost;
+    }
+
+    
 }
