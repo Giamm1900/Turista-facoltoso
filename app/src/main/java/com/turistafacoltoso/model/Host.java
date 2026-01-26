@@ -12,11 +12,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Host extends Utente{
-    private LocalDateTime dataDiRegistrazione;
+    private int idUtente;
+    private LocalDateTime dataDiRegistrazioneHost;
 
-    public Host(String nomeUser, String cognome, String email, String indirizzoUser, 
-                LocalDateTime dataDiRegistrazione) {
+    public Host(int idHost,int idUtente, String nomeUser, String cognome, String email, String indirizzoUser, 
+                LocalDateTime dataDiRegistrazioneHost) {
         super(nomeUser, cognome, email, indirizzoUser);
-        this.dataDiRegistrazione = dataDiRegistrazione;
+        this.id = idHost;
+        this.idUtente = idUtente;
+        this.dataDiRegistrazioneHost = dataDiRegistrazioneHost;
+    }
+
+    public Host(int idHost, int idUtente, String nomeUser, String cognome, String email, 
+                String indirizzoUser, LocalDateTime dataRegUtente, LocalDateTime dataRegHost) {
+        // Richiama il costruttore generato da @AllArgsConstructor di Utente (6 parametri)
+        super(idUtente, nomeUser, cognome, email, indirizzoUser, dataRegUtente);
+        this.id = idHost;
+        this.idUtente = idUtente;
+        this.dataDiRegistrazioneHost = dataRegHost;
     }
 }

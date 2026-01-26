@@ -6,16 +6,18 @@ CREATE TABLE public.utente
     cognome varchar(50) NOT NULL,
     email varchar(100) NOT NULL UNIQUE,
     indirizzo_user varchar(50) NOT NULL,
+    data_registrazione CURRENT_TIMESTAMP NOT NULL,
     
-    CONSTRAINT name_user_min_length CHECK (LENGTH(nome_user)>=5),
+    CONSTRAINT name_user_min_length CHECK (LENGTH(nome_user)>=2),
     CONSTRAINT email_format CHECK (email like '%@%.%')
 );
 
 CREATE TABLE public.host (
-    id INTEGER PRIMARY KEY,
-    data_di_registrazione TIMESTAMP NOT NULL,
+    id SERIAL PRIMARY KEY,
+    id_utente INTEGER NOT NULL UNIQUE,
+    data_di_registrazione_host CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT fk_host_utente
-        FOREIGN KEY (id)
+        FOREIGN KEY (id_utente)
         REFERENCES utente(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
@@ -41,11 +43,11 @@ CREATE TABLE public.abitazione (
 
 CREATE TABLE public.prenotazione (
     id SERIAL PRIMARY KEY,
+    utente_id INTEGER NOT NULL,
     data_inizio DATE NOT NULL,
     data_fine DATE NOT NULL,
-    utente_id INTEGER NOT NULL,
     abitazione_id INTEGER NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT(NOW)
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT fk_prenotazione_utente
         FOREIGN KEY (utente_id)
         REFERENCES utente(id)
@@ -60,11 +62,11 @@ CREATE TABLE public.prenotazione (
 
 CREATE TABLE public.feedback (
     id SERIAL PRIMARY KEY,
+    id_host INTEGER NOT NULL,
     titolo VARCHAR(150) NOT NULL,
     testo TEXT NOT NULL,
     punteggio INTEGER NOT NULL CHECK (punteggio BETWEEN 1 AND 5),
     prenotazione_id INTEGER NOT NULL UNIQUE,
-    id_host INTEGER NOT NULL,
     CONSTRAINT fk_feedback_prenotazione
         FOREIGN KEY (prenotazione_id)
         REFERENCES prenotazione(id)

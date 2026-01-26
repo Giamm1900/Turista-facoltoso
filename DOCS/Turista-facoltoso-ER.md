@@ -9,12 +9,12 @@
 - cognome
 - email
 - indirizzo
+- data_registrazione
 
 ### HOST (specializzazione di UTENTE)
 
 - id (PK, FK → Utente.id)
-codice_host
-- data_registrazione
+- data_inizio_periodo_host
 
 ### ABITAZIONE
 

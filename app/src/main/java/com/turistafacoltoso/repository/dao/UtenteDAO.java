@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.turistafacoltoso.model.Utente;
 
-public interface UserDAO {
+public interface UtenteDAO {
 
     // CREATE
 
@@ -30,8 +30,6 @@ public interface UserDAO {
     int deleteAll();
 
     boolean deleteById(Integer id);
-
-    boolean deleteByEmail(String email);
 
     boolean deleteByUsername(String name);
 }
