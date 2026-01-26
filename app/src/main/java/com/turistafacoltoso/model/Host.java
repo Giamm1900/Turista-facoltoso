@@ -12,12 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Host extends Utente{
-    private int id;
     private LocalDateTime dataDiRegistrazione;
 
-    public Host(int id, String nomeUser, String cognome, String email, String indirizzoUser, 
+    public Host(String nomeUser, String cognome, String email, String indirizzoUser, 
                 LocalDateTime dataDiRegistrazione) {
-        super(id, nomeUser, cognome, email, indirizzoUser);
+        super(nomeUser, cognome, email, indirizzoUser);
         this.dataDiRegistrazione = dataDiRegistrazione;
     }
 }
