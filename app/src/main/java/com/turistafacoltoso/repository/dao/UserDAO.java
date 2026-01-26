@@ -1,0 +1,37 @@
+package com.turistafacoltoso.repository.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.turistafacoltoso.model.Utente;
+
+public interface UserDAO {
+
+    // CREATE
+
+    Utente create(Utente u);
+
+    // READ
+
+    List<Utente> findAll();
+
+    Optional<Utente> findById(Integer id);
+
+    Optional<Utente> findByEmail(String email);
+
+    Optional<Utente> findByUsername(String name);
+
+    // UPDATE
+
+    Optional<Utente> update(Utente u);
+
+    // DELETE
+
+    int deleteAll();
+
+    boolean deleteById(Integer id);
+
+    boolean deleteByEmail(String email);
+
+    boolean deleteByUsername(String name);
+}
