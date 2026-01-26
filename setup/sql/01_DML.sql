@@ -1,11 +1,11 @@
-INSERT INTO utente (nome_user, cognome, email, indirizzo_user) VALUES
+INSERT INTO utente (nome_user, cognome, email, indirizzo_user,data_registrazione) VALUES
 ('Andrea', 'Rossi', 'andrea.rossi@email.com', 'Via Roma 10'),
 ('Giulia', 'Bianchi', 'giulia.bianchi@email.com', 'Via Milano 22'),
 ('Marco', 'Verdi', 'marco.verdi@email.com', 'Via Napoli 5'),
 ('Luciano', 'Neri', 'luciano.neri@email.com', 'Corso Torino 44'),
 ('Federica', 'Blu', 'federica.blu@email.com', 'Via Firenze 8');
 
-INSERT INTO host (id, data_di_registrazione) VALUES
+INSERT INTO host (id_utente, data_registrazione_host) VALUES
 (1, '2024-01-15 10:30:00'),
 (3, '2023-11-20 14:00:00');
 

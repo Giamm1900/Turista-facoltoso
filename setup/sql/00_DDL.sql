@@ -15,7 +15,7 @@ CREATE TABLE public.utente
 CREATE TABLE public.host (
     id SERIAL PRIMARY KEY,
     id_utente INTEGER NOT NULL UNIQUE,
-    data_di_registrazione_host CURRENT_TIMESTAMP NOT NULL,
+    data_registrazione_host CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT fk_host_utente
         FOREIGN KEY (id_utente)
         REFERENCES utente(id)
