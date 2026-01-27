@@ -27,7 +27,6 @@
             <groupId>io.javalin</groupId>
             <artifactId>javalin</artifactId>
             <version>6.7.0</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -48,6 +47,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.8</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

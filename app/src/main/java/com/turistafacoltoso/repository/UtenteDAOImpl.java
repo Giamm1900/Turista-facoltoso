@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.Authentication.User;
 
 import com.turistafacoltoso.model.Utente;
 import com.turistafacoltoso.repository.dao.UtenteDAO;
+import com.turistafacoltoso.util.DBHelper;
 import com.turistafacoltoso.util.DataBaseConnection;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +23,13 @@ public class UtenteDAOImpl implements UtenteDAO {
     // CREATE
     @Override
     public Utente create(Utente u){
-        String sql = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user,data_registrazione) VALUES (?,?,?,?,?) RETURNING id, data_registrazione";
+        String sql = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user) VALUES (?,?,?,?,?) RETURNING id, data_registrazione";
         try (Connection conn = DataBaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getIndirizzoUser());
-            ps.setDate(5,u.getDataRegistrazione());
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -72,7 +72,7 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
 
         log.info("lista utenti trovata:"+listUtenti.size());
-
+        System.out.print(listUtenti);
         return listUtenti;
     }
 
@@ -147,7 +147,16 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     // UPDATE
 
-    public Optional<Utente> update(Utente u){
+    public void update(Utente u){
+        String sql = "UPDATE public.utente SET nome_user = ?, cognome = ?, email = ?, indirizzo_user = ? ";
+
+        DBHelper.executeUpdate(sql, ps ->{
+            ps.setString(1, u.getNomeUser());
+            ps.setString(2, u.getCognome());
+            ps.setString(3, u.getEmail());
+            ps.setString(4, u.getIndirizzoUser());
+        });
+        log.info("utente update {} : "+ u.toString());
     }
 
     // DELETE
@@ -190,8 +199,26 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
     }
 
-    public boolean deleteByUsername(String name){
-        
+    public boolean deleteByUsername(String nomeUser){
+        String sql = "DELETE FROM utente WHERE nome_user = ?";
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nomeUser);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                log.info("Utente eliminato con ID: {}", nomeUser);
+                return true;
+            }
+            log.debug("Nessun utente eliminato con ID: {}", nomeUser);
+            return false;
+
+        } catch (SQLException ex) {
+            log.error("Errore durante l'eliminazione per ID: {}", nomeUser, ex);
+            throw new RuntimeException("SQLException: ", ex);
+        }
     }
     
 }
