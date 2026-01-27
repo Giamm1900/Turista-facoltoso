@@ -6,16 +6,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import lombok.NoArgsConstructor;
-
-
-@NoArgsConstructor
 public class DataBaseConnection {
     private static String url;
     private static String user;
     private static String pwd;
     private static boolean initialized = false;
+
+    public DataBaseConnection(){
+
+    }
 
     public static void init(String configPath) {
         Properties props = new Properties();

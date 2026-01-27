@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.eclipse.jetty.server.Authentication.User;
-
 import com.turistafacoltoso.model.Utente;
 import com.turistafacoltoso.repository.dao.UtenteDAO;
 import com.turistafacoltoso.util.DBHelper;
@@ -23,7 +20,7 @@ public class UtenteDAOImpl implements UtenteDAO {
     // CREATE
     @Override
     public Utente create(Utente u){
-        String sql = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user) VALUES (?,?,?,?,?) RETURNING id, data_registrazione";
+        String sql = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user) VALUES (?,?,?,?) RETURNING id, data_registrazione";
         try (Connection conn = DataBaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, u.getNomeUser());
@@ -138,7 +135,7 @@ public class UtenteDAOImpl implements UtenteDAO {
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
-            log.error("Errore durante il findById di Utente: {} "+ex);
+            log.error("Errore durante il findById: {} ",ex);
             throw new RuntimeException("SQLException: "+ex);
         }
         log.info("Utente trovato: {} "+u.getClass().toString());
@@ -168,7 +165,7 @@ public class UtenteDAOImpl implements UtenteDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             int deleted = ps.executeUpdate();
-            log.info("Eliminati {} utenti: ", deleted);
+            log.info("Eliminati utenti: {} ", deleted);
             return deleted;
 
         } catch (SQLException ex) {
