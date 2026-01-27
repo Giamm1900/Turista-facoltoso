@@ -43,7 +43,7 @@ FROM abitazione a WHERE id = ?
 SELECT * 
 FROM prenotazione p
 WHERE utente_id = ?
-ORDER BY created_at
+ORDER BY created_at DESC
 LIMIT 1
 
 --3 Ottenere l'abitazione più gettonata nell'ultimo mese

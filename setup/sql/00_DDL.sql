@@ -6,7 +6,7 @@ CREATE TABLE public.utente
     cognome varchar(50) NOT NULL,
     email varchar(100) NOT NULL UNIQUE,
     indirizzo_user varchar(50) NOT NULL,
-    data_registrazione CURRENT_TIMESTAMP NOT NULL,
+    data_registrazione TIMESTAMP DEFAULT NOW() NOT NULL,
     
     CONSTRAINT name_user_min_length CHECK (LENGTH(nome_user)>=2),
     CONSTRAINT email_format CHECK (email like '%@%.%')
@@ -15,7 +15,7 @@ CREATE TABLE public.utente
 CREATE TABLE public.host (
     id SERIAL PRIMARY KEY,
     id_utente INTEGER NOT NULL UNIQUE,
-    data_registrazione_host CURRENT_TIMESTAMP NOT NULL,
+    data_registrazione_host TIMESTAMP DEFAULT NOW() NOT NULL,
     CONSTRAINT fk_host_utente
         FOREIGN KEY (id_utente)
         REFERENCES utente(id)
