@@ -3,6 +3,7 @@ package com.turistafacoltoso;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.turistafacoltoso.repository.UtenteDAOImpl;
 import com.turistafacoltoso.util.DataBaseConnection;
 
 import io.javalin.Javalin;
@@ -23,7 +24,7 @@ public class App
             config.http.defaultContentType = "application/json";
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it->{
-                    it.allowHost( "http://localhost:/");
+                    it.anyHost();
                 });
             });
         }).start(7001);
@@ -32,5 +33,8 @@ public class App
             ctx.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
             ctx.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
         });
+
+        UtenteDAOImpl utenteDAOImpl = new UtenteDAOImpl();
+        utenteDAOImpl.findAll();
     }
 }

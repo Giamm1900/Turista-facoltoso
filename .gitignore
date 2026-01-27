@@ -30,7 +30,11 @@ buildNumber.properties
 ##############################
 .vscode/
 .code-workspace
+.settings/
+.project
+.classpath
+.idea/
 
 # File di configurazione sensibili (dove magari tieni password del DB)
-config.properties
+src/main/resources/config.properties
 .env
