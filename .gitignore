@@ -36,5 +36,5 @@ buildNumber.properties
 .idea/
 
 # File di configurazione sensibili (dove magari tieni password del DB)
-config.properties
+app/src/main/resources/config.properties
 .env
