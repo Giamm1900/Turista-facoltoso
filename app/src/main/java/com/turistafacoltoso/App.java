@@ -34,7 +34,7 @@ public class App
             ctx.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
         });
 
-        UtenteDAOImpl utenteDAOImpl = new UtenteDAOImpl();
-        utenteDAOImpl.findAll();
+        // UtenteDAOImpl utenteDAOImpl = new UtenteDAOImpl();
+        // utenteDAOImpl.findAll();
     }
 }
