@@ -21,6 +21,9 @@ public class AbitazioneDAOService {
         this.hostDAOService = new HostDAOService();
     }
 
+    /**
+     * Inserimento di un abitazione tramite campi
+     */
     public Abitazione insertAbitazione(String nomeAbitazione, String indirizzoAbitazione, int nLocali, int nPostiLetto,
             BigDecimal prezzoPerNotte, LocalDate disponibilitaInizio, LocalDate disponibilitaFine, int idHost) {
         log.info(
@@ -34,6 +37,10 @@ public class AbitazioneDAOService {
         return abitazioneDAO.create(a);
     }
 
+    /**
+     * 
+     * Ricerca di tutte le abitazioni presenti
+     */
     public List<Abitazione> getAllAbitazioni() {
         log.info("Recupero di tutte le abitazioni");
         return abitazioneDAO.findAll();
