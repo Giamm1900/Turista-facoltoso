@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.turistafacoltoso.model.Host;
-import com.turistafacoltoso.model.Utente;
 import com.turistafacoltoso.repository.dao.HostDAO;
 import com.turistafacoltoso.util.DataBaseConnection;
 import com.turistafacoltoso.util.DataConverter;
