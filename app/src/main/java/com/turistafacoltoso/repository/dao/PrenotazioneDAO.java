@@ -20,7 +20,7 @@ public interface PrenotazioneDAO {
 
     Optional<Prenotazione> findByDataCreazione(LocalDateTime localDateTime);
 
-    Optional<Prenotazione> findByUtenteId(Integer idUtente);
+    List<Prenotazione> findByUtenteId(Integer idUtente);
 
     // UPDATE
 
