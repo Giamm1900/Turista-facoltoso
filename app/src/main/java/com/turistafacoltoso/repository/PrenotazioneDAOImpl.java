@@ -75,7 +75,7 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
                 list.add(mapResultSetToPrenotazione(rs));
             }
         } catch (SQLException e) {
-            log.error("Errore nel recupero prenotazioni {}: ", e);
+            log.error("Errore nel recupero prenotazioni findAll {}: ", e);
             throw new RuntimeException("Errore nel recupero delle prenotazioni", e);
         }
         return list;

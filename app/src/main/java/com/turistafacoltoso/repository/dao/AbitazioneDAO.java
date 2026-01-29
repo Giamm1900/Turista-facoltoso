@@ -18,11 +18,11 @@ public interface AbitazioneDAO {
 
     Optional<Abitazione> findById(Integer id);
 
-    Optional<Abitazione> findByNLocali(Integer number);
+    List<Abitazione> findByNLocali(Integer number);
 
-    Optional<Abitazione> findByNomeAbitazione(String name);
-
-    Optional<Abitazione> findByDataDisponibilita(LocalDate dataInizio,LocalDate dataFine);
+    List<Abitazione> findByNomeAbitazione(String name);
+    
+    List<Abitazione> findByDataDisponibilita(LocalDate dataInizio, LocalDate dataFine);
 
     // UPDATE
 
