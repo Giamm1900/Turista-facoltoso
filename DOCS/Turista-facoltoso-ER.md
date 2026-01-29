@@ -55,6 +55,7 @@
 
 ### Relazione -- Descrizione -- Cardinalità
 
+```
 - Utente → Host -- Specializzazione -- 1 : 0..1
 - Host → Abitazione -- Carica. 1 : N
 - Utente → Prenotazione -- Effettua -- 1 : N
@@ -62,3 +63,4 @@
 - Prenotazione → Feedback -- Può avere -- 1 : 0..1
 - Host → Feedback -- Riceve -- 1 : N
 - Host → SuperHost -- Derivata -- 1 : 0..1
+```

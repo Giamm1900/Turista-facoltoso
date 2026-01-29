@@ -11,6 +11,7 @@ import com.turistafacoltoso.model.Utente;
 import com.turistafacoltoso.repository.dao.UtenteDAO;
 import com.turistafacoltoso.util.DBHelper;
 import com.turistafacoltoso.util.DataBaseConnection;
+import com.turistafacoltoso.util.DataConverter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,16 +31,14 @@ public class UtenteDAOImpl implements UtenteDAO {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                u.setNomeUser(rs.getString("nome_user"));
-                u.setCognome(rs.getString("cognome"));
-                u.setEmail(rs.getString("email"));
-                u.setIndirizzoUser(rs.getString("indirizzo_user"));
+                u.setId(rs.getInt("id"));
+                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
             }
         } catch (SQLException ex) {
-            log.error("Errore creazione utente: {}"+u.getClass().toString()+ex);
+            log.error("Errore creazione utente: {}"+ex);
             throw new RuntimeException("SQLException"+ex);
         }
-        log.info("utente : {} creato con successo"+u.getClass().toString());
+        log.info("utente : {} creato con successo"+u.toString());
         return u;
     }
 
@@ -59,56 +58,56 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
-
+                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 listUtenti.add(u);
             }
-            
         } catch (SQLException ex) {
             log.error("errore utenti non trovati: {}"+ex);
             throw new RuntimeException("SQLException:"+ex);
         }
-
         log.info("lista utenti trovata:"+listUtenti.size());
         System.out.print(listUtenti);
         return listUtenti;
     }
 
     public Optional<Utente> findById(Integer id){
-        String sql = "SELECT * FROM utente WHERE id = ? LIMIT 1; ";
+        String sql = "SELECT * FROM utente WHERE id = ? LIMIT 1 ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)){
-            ResultSet rs = ps.executeQuery();
             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 u.setId(rs.getInt("id"));
                 u.setNomeUser(rs.getString("nome_user"));
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
+                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
             log.error("Errore durante il findById di Utente: {} "+ex);
             throw new RuntimeException("SQLException: "+ex);
         }
-        log.info("Utente trovato: {}"+u.getClass().toString());
+        log.info("Utente trovato: {}"+u.toString());
         return Optional.empty();
     }
 
     public Optional<Utente> findByEmail(String email){
-        String sql = "SELECT * FROM utente WHERE email = ? LIMIT 1; ";
+        String sql = "SELECT * FROM utente WHERE email = ? LIMIT 1 ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)){
-            ResultSet rs = ps.executeQuery();
             ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 u.setId(rs.getInt("id"));
                 u.setNomeUser(rs.getString("nome_user"));
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
+                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
@@ -120,18 +119,19 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public Optional<Utente> findByUsername(String name){
-        String sql = "SELECT * FROM utente WHERE nome_user = ? LIMIT 1; ";
+        String sql = "SELECT * FROM utente WHERE nome_user = ? ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)){
-            ResultSet rs = ps.executeQuery();
             ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 u.setId(rs.getInt("id"));
                 u.setNomeUser(rs.getString("nome_user"));
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
+                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
@@ -144,7 +144,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     // UPDATE
 
-    public void update(Utente u){
+    public Utente update(Utente u){
         String sql = "UPDATE public.utente SET nome_user = ?, cognome = ?, email = ?, indirizzo_user = ? ";
 
         DBHelper.executeUpdate(sql, ps ->{
@@ -154,6 +154,7 @@ public class UtenteDAOImpl implements UtenteDAO {
             ps.setString(4, u.getIndirizzoUser());
         });
         log.info("utente update {} : "+ u.toString());
+        return u;
     }
 
     // DELETE

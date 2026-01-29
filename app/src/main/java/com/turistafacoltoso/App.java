@@ -3,7 +3,8 @@ package com.turistafacoltoso;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.turistafacoltoso.repository.UtenteDAOImpl;
+import com.turistafacoltoso.controller.HostController;
+import com.turistafacoltoso.controller.UtenteController;
 import com.turistafacoltoso.util.DataBaseConnection;
 
 import io.javalin.Javalin;
@@ -34,7 +35,10 @@ public class App
             ctx.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
         });
 
-        // UtenteDAOImpl utenteDAOImpl = new UtenteDAOImpl();
-        // utenteDAOImpl.findAll();
+        UtenteController utenteController = new UtenteController();
+        utenteController.registerRoutes(app);
+
+        HostController hostController = new HostController();
+        hostController.registerRoutes(app);
     }
 }

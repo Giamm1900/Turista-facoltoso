@@ -23,7 +23,7 @@ public interface UtenteDAO {
 
     // UPDATE
 
-    void update(Utente u);
+    Utente update(Utente u);
 
     // DELETE
 

@@ -22,7 +22,7 @@ public class UtenteDAOService {
     // CREATE
     public Utente insertUtente(String nomeUser, String cognome, String email, String indirizzoUser){
 
-        log.info("Inserimento dati Utente: nomeuser: {}, cognome: {}, email: {}, indirizzo:{}.",nomeUser,cognome,email,indirizzoUser);
+        log.info("Inserimento dati Utente: nome_user: {}, cognome: {}, email: {}, indirizzo:{}.",nomeUser,cognome,email,indirizzoUser);
         
         Utente u = new Utente(nomeUser,cognome,email,indirizzoUser);
 
@@ -53,14 +53,22 @@ public class UtenteDAOService {
     
     // UPDATE
 
-    public void updateUtente(Utente u){
+    public Utente updateUtente(Utente u){
         if (userDAO.findById(u.getId()).isEmpty()) {
             throw new UtenteNotFoundException(u.getId());
         }
-        userDAO.update(u);
+        if (userDAO.findByEmail(u.getEmail()).isPresent()) {
+            log.warn("Email già esistente Email:{}",u.getEmail());
+            throw new DuplicateUtenteException("email",u.getEmail());
+        }
+        return userDAO.update(u);
     }
 
     // DELETE
+
+    public int deleteAllUsers(){
+        return userDAO.deleteAll();
+    }
 
     public void deleteById(int id){
         if (!userDAO.deleteById(id)) {
