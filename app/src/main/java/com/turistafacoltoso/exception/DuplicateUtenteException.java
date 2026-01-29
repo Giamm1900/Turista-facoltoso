@@ -1,7 +1,6 @@
 package com.turistafacoltoso.exception;
 
 public class DuplicateUtenteException extends RuntimeException{ 
-
     public DuplicateUtenteException(String message){
         super(message);
     }
