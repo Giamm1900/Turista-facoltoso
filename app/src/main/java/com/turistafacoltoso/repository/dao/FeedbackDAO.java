@@ -17,9 +17,9 @@ public interface FeedbackDAO {
 
     Optional<Feedback> findById(Integer id);
 
-    Optional<Feedback> findByIdHost(Integer idHost);
+    List<Feedback> findByIdHost(Integer idHost);
 
-    Optional<Feedback> findByPunteggio(Integer number);
+    List<Feedback> findByPunteggio(Integer number);
 
     // UPDATE
 
