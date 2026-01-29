@@ -18,12 +18,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UtenteDAOImpl implements UtenteDAO {
 
+    private static final String CREATE_QUERY = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user) VALUES (?,?,?,?) RETURNING id, data_registrazione";
+    private static final String FIND_QUERY = "SELECT * FROM utente";
+    private static final String FIND_QUERY_BY_ID = "SELECT * FROM utente WHERE id = ? LIMIT 1 ";
+    private static final String FIND_QUERY_BY_NAME = "SELECT * FROM utente WHERE nome_user = ? ";
+    private static final String FIND_QUERY_BY_EMAIL = "SELECT * FROM utente WHERE email = ? LIMIT 1 ";
+    private static final String UPDATE_QUERY = "UPDATE public.utente SET nome_user = ?, cognome = ?, email = ?, indirizzo_user = ? ";
+    private static final String DELETE_ALL_QUERY = "DELETE FROM utente";
+    private static final String DELETE_QUERY_BY_ID = "DELETE FROM utente WHERE id = ?";
+    private static final String DELETE_QUERY_BY_NAME = "DELETE FROM utente WHERE nome_user = ?";
+
     // CREATE
     @Override
     public Utente create(Utente u){
-        String sql = "INSERT INTO utente(nome_user,cognome,email,indirizzo_user) VALUES (?,?,?,?) RETURNING id, data_registrazione";
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)) {
+        PreparedStatement ps = conn.prepareStatement(CREATE_QUERY)) {
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
@@ -35,10 +44,10 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
             }
         } catch (SQLException ex) {
-            log.error("Errore creazione utente: {}"+ex);
-            throw new RuntimeException("SQLException"+ex);
+            log.error("Errore creazione utente: {}",ex);
+            throw new RuntimeException("SQLException",ex);
         }
-        log.info("utente : {} creato con successo"+u.toString());
+        log.info("utente : {} creato con successo",u.toString());
         return u;
     }
 
@@ -47,9 +56,8 @@ public class UtenteDAOImpl implements UtenteDAO {
     public List<Utente> findAll(){
 
         List<Utente> listUtenti = new ArrayList<>();
-        String sql = "SELECT * FROM utente";
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)){
+        PreparedStatement ps = conn.prepareStatement(FIND_QUERY)){
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Utente u = new Utente();
@@ -71,10 +79,9 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public Optional<Utente> findById(Integer id){
-        String sql = "SELECT * FROM utente WHERE id = ? LIMIT 1 ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)){
+        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_ID)){
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -95,10 +102,9 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public Optional<Utente> findByEmail(String email){
-        String sql = "SELECT * FROM utente WHERE email = ? LIMIT 1 ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)){
+        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_EMAIL)){
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -119,10 +125,9 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public Optional<Utente> findByUsername(String name){
-        String sql = "SELECT * FROM utente WHERE nome_user = ? ";
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)){
+        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_NAME)){
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -145,25 +150,21 @@ public class UtenteDAOImpl implements UtenteDAO {
     // UPDATE
 
     public Utente update(Utente u){
-        String sql = "UPDATE public.utente SET nome_user = ?, cognome = ?, email = ?, indirizzo_user = ? ";
-
-        DBHelper.executeUpdate(sql, ps ->{
+        DBHelper.executeUpdate(UPDATE_QUERY, ps ->{
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getIndirizzoUser());
         });
-        log.info("utente update {} : "+ u.toString());
+        log.info("utente update {} : ", u.toString());
         return u;
     }
 
     // DELETE
 
     public int deleteAll(){
-        String sql = "DELETE FROM utente";
-
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(DELETE_ALL_QUERY)) {
 
             int deleted = ps.executeUpdate();
             log.info("Eliminati utenti: {} ", deleted);
@@ -176,10 +177,8 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public boolean deleteById(Integer id){
-        String sql = "DELETE FROM utente WHERE id = ?";
-
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_ID)) {
 
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -198,10 +197,8 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     public boolean deleteByUsername(String nomeUser){
-        String sql = "DELETE FROM utente WHERE nome_user = ?";
-
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_NAME)) {
 
             ps.setString(1, nomeUser);
             int rowsAffected = ps.executeUpdate();
