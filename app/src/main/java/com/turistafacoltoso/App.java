@@ -3,6 +3,7 @@ package com.turistafacoltoso;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.turistafacoltoso.controller.AbitazioneController;
 import com.turistafacoltoso.controller.HostController;
 import com.turistafacoltoso.controller.UtenteController;
 import com.turistafacoltoso.util.DataBaseConnection;
@@ -40,5 +41,8 @@ public class App
 
         HostController hostController = new HostController();
         hostController.registerRoutes(app);
+
+        AbitazioneController abitazioneController = new AbitazioneController();
+        abitazioneController.registerRoutes(app);
     }
 }

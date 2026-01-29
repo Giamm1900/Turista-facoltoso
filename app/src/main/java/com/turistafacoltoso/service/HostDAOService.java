@@ -13,7 +13,7 @@ public class HostDAOService {
     private final HostDAO hostDAO;
     private final UtenteDAOService utenteService;
 
-    public HostDAOService(){
+    public HostDAOService() {
         hostDAO = new HostDAOImpl();
         utenteService = new UtenteDAOService();
     }
@@ -43,13 +43,8 @@ public class HostDAOService {
         return hostDAO.findAll();
     }
 
-    public Host getHostById(Integer id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("ID non valido");
-        }
-
-        return hostDAO.findById(id)
-                .orElseThrow(() -> new HostNotFoundException(id));
+    public Optional<Host> getHostById(int id) {
+        return hostDAO.findById(id); // Assumendo che il DAO dell'Host restituisca un Optional
     }
 
     // ==================== UPDATE ====================

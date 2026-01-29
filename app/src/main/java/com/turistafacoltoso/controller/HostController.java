@@ -3,6 +3,7 @@ package com.turistafacoltoso.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.turistafacoltoso.exception.DuplicateHostException;
 import com.turistafacoltoso.exception.HostNotFoundException;
@@ -75,7 +76,7 @@ public class HostController {
         log.info("GET /api/v1/hosts/{} - Richiesta host per ID", id);
 
         try {
-            Host host = hostService.getHostById(id);
+            Optional<Host> host = hostService.getHostById(id);
             ctx.status(HttpStatus.OK);
             ctx.json(host);
 

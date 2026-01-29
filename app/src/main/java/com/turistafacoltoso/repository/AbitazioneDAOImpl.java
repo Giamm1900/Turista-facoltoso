@@ -91,7 +91,7 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
         } catch (SQLException e) {
             log.error("Errore findByNLocali: ", e);
         }
-        return result; // Restituisce lista vuota se non trova nulla, non null!
+        return result;
     }
 
     @Override
