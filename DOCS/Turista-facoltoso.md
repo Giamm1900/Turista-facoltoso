@@ -32,19 +32,19 @@
 
 ### Il sistema deve permettere di
 
-- Ottenere le abitazioni corrispondenti ad un certo codice host
-- Ottenere l'ultima prenotazione dato un id utente
-- Ottenere l'abitazione più gettonata nell'ultimo mese
-- Ottenere gli host con più prenotazioni nell'ultimo mese
-- Ottenere tutti i super-host
-- Ottenere i 5 utenti con più giorni prenotati nell'ultimo mese
-- Ottenere il numero medio di posti letto calcolato in base a tutte le abitazioni caricate dagli host
+- Ottenere le **abitazioni** corrispondenti ad un certo codice **host**
+- Ottenere l'**ultima prenotazione** dato un id **utente**
+- Ottenere l'**abitazione** più gettonata nell'ultimo **mese**
+- Ottenere gli **host** con più prenotazioni nell'ultimo **mese**
+- Ottenere tutti i **super-host**
+- Ottenere i 5 **utenti** con più giorni prenotati nell'ultimo **mese**
+- Ottenere il **numero medio di posti letto** calcolato in base a tutte le abitazioni caricate dagli **host**
 
 ## Requisiti tecnici
 
 ### Backend Java
 
-#### Il codice deve rispettare tutte le best practices e i moduli visti fino ad ora nel corso:
+#### Il codice deve rispettare tutte le best practices e i moduli visti fino ad ora nel corso
 
 - Corretta organizzazione in package (model, dao, controller, view, ecc.)
 - Utilizzo di Collections (List, Map, Set) per la gestione dei dati
