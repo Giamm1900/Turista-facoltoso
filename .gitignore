@@ -38,3 +38,4 @@ buildNumber.properties
 # File di configurazione sensibili (dove magari tieni password del DB)
 app/src/main/resources/config.properties
 .env
+DOCS/ex.md

@@ -8,7 +8,6 @@ import com.turistafacoltoso.controller.FeedbackController;
 import com.turistafacoltoso.controller.HostController;
 import com.turistafacoltoso.controller.PrenotazioneController;
 import com.turistafacoltoso.controller.UtenteController;
-import com.turistafacoltoso.model.Feedback;
 import com.turistafacoltoso.util.DataBaseConnection;
 
 import io.javalin.Javalin;

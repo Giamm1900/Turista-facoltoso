@@ -1,6 +1,5 @@
 package com.turistafacoltoso.controller;
 
-
 import java.util.Optional;
 
 import com.turistafacoltoso.exception.FeedbackNotFoundException;
@@ -17,18 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 public class FeedbackController {
     private final FeedbackDAOService feedbackDAOService;
 
-    public FeedbackController(){
+    public FeedbackController() {
         this.feedbackDAOService = new FeedbackDAOService();
     }
 
-    public void registerRoutes(Javalin app){
+    public void registerRoutes(Javalin app) {
         // CREATE
-        app.post("/api/v1/feedback",this::createFeedback);
+        app.post("/api/v1/feedback", this::createFeedback);
 
         // READ
-        app.get("/api/v1/feedback",this::getAllFeedback);
-        app.get("/api/v1/feedback/{id}",this::getFeedbackById);
-        app.get("/api/v1/feedback/punteggio/{punteggio}",this::getFeedbackByPunteggio);
+        app.get("/api/v1/feedback", this::getAllFeedback);
+        app.get("/api/v1/feedback/{id}", this::getFeedbackById);
+        app.get("/api/v1/feedback/punteggio/{punteggio}", this::getFeedbackByPunteggio);
 
         // UPDATE
         app.put("/api/v1/feedback/{id}", this::updateFeedback);
@@ -37,62 +36,71 @@ public class FeedbackController {
         app.delete("/api/v1/feedback/{}", this::deleteFeedbackById);
     }
 
-    private void createFeedback(Context ctx){
+    private void createFeedback(Context ctx) {
         log.info("POST api/v1/feedback");
         Feedback f = ctx.bodyAsClass(Feedback.class);
 
-        if (feedbackDAOService.getFeedbackById(f.getId()).isPresent()) {
-            log.error("errore nella creazione del feedback");
+        // 2. Valida invece i dati obbligatori
+        if (f.getTitolo() == null || f.getPunteggio() <= 0) {
+            log.error("Dati feedback mancanti o non validi");
             ctx.status(HttpStatus.BAD_REQUEST);
-            throw new IllegalArgumentException("campi non corretti");
+            return; // Esci senza lanciare eccezioni non gestite
         }
 
-        Feedback created = feedbackDAOService.insertFeedback(
-            f.getTitolo(),
-            f.getTesto(), f.getPunteggio(), f.getPrenotazioneId(), f.getIdHost());
-        
-        ctx.status(HttpStatus.CREATED);
-        ctx.json(created);
+        try {
+            Feedback created = feedbackDAOService.insertFeedback(
+                    f.getTitolo(),
+                    f.getTesto(),
+                    f.getPunteggio(),
+                    f.getPrenotazioneId(),
+                    f.getIdHost());
+
+            ctx.status(HttpStatus.CREATED);
+            ctx.json(created);
+        } catch (Exception e) {
+            log.error("Errore durante l'inserimento: ", e);
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    private void getAllFeedback(Context ctx){
+    private void getAllFeedback(Context ctx) {
         log.info("GET api/v1/feedback");
         ctx.json(feedbackDAOService.getAllFeedback());
     }
 
-    private void getFeedbackById(Context ctx){
+    private void getFeedbackById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         log.info("GET api/v1/feedback/{id} - ricerca per id", id);
 
         Optional<Feedback> f = feedbackDAOService.getFeedbackById(id);
 
         if (f.isPresent()) {
-            ctx.json(f.get()); 
-        }else {
+            ctx.json(f.get());
+        } else {
             ctx.status(HttpStatus.NOT_FOUND);
             ctx.json(("Abitazione non trovata"));
         }
     }
 
-    private void getFeedbackByPunteggio(Context ctx){
+    private void getFeedbackByPunteggio(Context ctx) {
         int punteggio = Integer.parseInt(ctx.pathParam("punteggio"));
         log.info("GET api/v1/feedback/punteggio/{punteggio} - ricerca per punteggio", punteggio);
         ctx.json(feedbackDAOService.getFeedbackByPunteggio(punteggio));
     }
 
     // private void getFeedbackByIdHost(Context ctx){
-    //     int idHost = Integer.parseInt(ctx.pathParam("idHost"));
-    //     log.info("GET api/v1/feedback/host/{id} - ricerca per punteggio", idHost);
-    //     ctx.json(feedbackDAOService.getFeedbackByIdHost(idHost));
+    // int idHost = Integer.parseInt(ctx.pathParam("idHost"));
+    // log.info("GET api/v1/feedback/host/{id} - ricerca per punteggio", idHost);
+    // ctx.json(feedbackDAOService.getFeedbackByIdHost(idHost));
     // }
 
-    private void updateFeedback(Context ctx){
+    private void updateFeedback(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         Feedback f = ctx.bodyAsClass(Feedback.class);
         f.setId(id); // Assicuriamo che l'ID sia quello del path
 
         log.info("PUT /api/v1/feedback/{} - Aggiornamento", id);
-        
+
         Optional<Feedback> updated = feedbackDAOService.updateFeedback(f);
         if (updated.isPresent()) {
             ctx.json(updated.get());
@@ -102,7 +110,7 @@ public class FeedbackController {
         }
     }
 
-    private void deleteFeedbackById(Context ctx){
+    private void deleteFeedbackById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         log.info("DELETE /api/v1/feedback/{} - Cancellazione", id);
 
