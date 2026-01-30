@@ -30,6 +30,7 @@ public class FeedbackDAOService {
         log.info(
             "inserimento feedback - titolo: {}, testo: {}, punteggio: {}, prenotazioneid: {}, idHost: {}"
             ,titolo,testo,punteggio,prenotazioneId,idHost);
+        if (punteggio < 1 || punteggio > 5) throw new IllegalArgumentException("Punteggio non valido");
         Feedback f = new Feedback(titolo,testo,punteggio,prenotazioneId,idHost);
         return feedbackDAO.create(f);
     }
@@ -75,7 +76,7 @@ public class FeedbackDAOService {
      * 
      */
     public List<Feedback> getFeedbackByPunteggio(int punteggio){
-        if (punteggio<= 0) {
+        if (punteggio < 1 || punteggio > 5) {
             log.error("il punteggio non può essere 0:",punteggio);
             throw new IllegalArgumentException("punteggio deve essere compreso tra 1 e 5");
         }
@@ -103,8 +104,12 @@ public class FeedbackDAOService {
      * @return
      */
     public boolean deleteFeedbackById(int id){
-        if (feedbackDAO.findById(id).equals(null)) {
-            
+        log.info("delete di un feedback per id");
+
+        Optional<Feedback> feedback = feedbackDAO.findById(id);
+        if (feedback.isEmpty()) {
+            log.warn("Impossibile eliminare: feedback {} non trovato", id);
+            return false;
         }
         return feedbackDAO.deleteById(id);
     }
