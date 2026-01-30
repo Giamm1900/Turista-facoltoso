@@ -67,6 +67,7 @@ CREATE TABLE public.feedback (
     testo TEXT NOT NULL,
     punteggio INTEGER NOT NULL CHECK (punteggio BETWEEN 1 AND 5),
     prenotazione_id INTEGER NOT NULL UNIQUE,
+    data_publicazione TIMESTAMP DEFAULT NOW(),
     CONSTRAINT fk_feedback_prenotazione
         FOREIGN KEY (prenotazione_id)
         REFERENCES prenotazione(id)
