@@ -12,14 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FeedbackDAOService {
-    private final FeedbackDAO feedbackDAO;
-    private final HostDAOService hostDAOService;
-    private final PrenotazioneDAOService prenotazioneDAOService;  
+    private final FeedbackDAO feedbackDAO; 
 
     public FeedbackDAOService(){
         this.feedbackDAO = new FeedbackDAOImpl();
-        this.hostDAOService = new HostDAOService();
-        this.prenotazioneDAOService = new PrenotazioneDAOService();
     }
 
     /**

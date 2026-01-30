@@ -1,5 +1,6 @@
 package com.turistafacoltoso.repository.dao;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +15,39 @@ public interface AbitazioneDAO {
 
     // READ
 
+    /**
+     * find all Abitations
+     * @return
+     */
     List<Abitazione> findAll();
 
+    /**
+     * Find abitation by 'id'
+     * @param id
+     * @return
+     */
     Optional<Abitazione> findById(Integer id);
 
+    /**
+     * find by locals in 'Abitazione'
+     * @param number
+     * @return
+     */
     List<Abitazione> findByNLocali(Integer number);
 
+    /**
+     * find by name 
+     * @param name
+     * @return
+     */
     List<Abitazione> findByNomeAbitazione(String name);
     
     List<Abitazione> findByDataDisponibilita(LocalDate dataInizio, LocalDate dataFine);
+
+    List<Abitazione> findByHostId(int idHost);
+
+    Optional<Abitazione> findMostPopularLastMonth();
+
 
     // UPDATE
 
@@ -35,4 +60,6 @@ public interface AbitazioneDAO {
     boolean deleteById(Integer id);
 
     boolean deleteByName(String name);
+
+    BigDecimal getMediaPostiLetto();
 }

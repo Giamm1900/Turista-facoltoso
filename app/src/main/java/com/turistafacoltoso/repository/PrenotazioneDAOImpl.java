@@ -65,6 +65,31 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
         }
     }
 
+    
+    @Override
+    public Optional<Prenotazione> findLatestByUtenteId(int utenteId) {
+        String sql = "SELECT * \r\n" + //
+                        "FROM prenotazione p\r\n" + //
+                        "WHERE utente_id = ?\r\n" + //
+                        "ORDER BY created_at DESC\r\n" + //
+                        "LIMIT 1";
+        try (Connection conn = DataBaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, utenteId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToPrenotazione(rs));
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Errore nel recupero prenotazioni per id {}: ", e);
+            throw new RuntimeException("Errore nel findById", e);
+        }
+        return Optional.empty();
+
+    }
+
+
     @Override
     public List<Prenotazione> findAll() {
         List<Prenotazione> list = new ArrayList<>();

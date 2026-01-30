@@ -1,6 +1,7 @@
 package com.turistafacoltoso.repository.dao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.turistafacoltoso.model.Utente;
@@ -20,6 +21,8 @@ public interface UtenteDAO {
     Optional<Utente> findByEmail(String email);
 
     Optional<Utente> findByUsername(String name);
+
+    Map<String,Integer> findTopUsersByDaysLastMonth();
 
     // UPDATE
 

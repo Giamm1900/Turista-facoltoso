@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import com.turistafacoltoso.model.Utente;
 import com.turistafacoltoso.repository.dao.UtenteDAO;
@@ -30,9 +32,9 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     // CREATE
     @Override
-    public Utente create(Utente u){
+    public Utente create(Utente u) {
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(CREATE_QUERY)) {
+                PreparedStatement ps = conn.prepareStatement(CREATE_QUERY)) {
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
@@ -41,23 +43,24 @@ public class UtenteDAOImpl implements UtenteDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u.setId(rs.getInt("id"));
-                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
+                u.setDataRegistrazione(
+                        DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
             }
         } catch (SQLException ex) {
-            log.error("Errore creazione utente: {}",ex);
-            throw new RuntimeException("SQLException",ex);
+            log.error("Errore creazione utente: {}", ex);
+            throw new RuntimeException("SQLException", ex);
         }
-        log.info("utente : {} creato con successo",u.toString());
+        log.info("utente : {} creato con successo", u.toString());
         return u;
     }
 
     // READ
     @Override
-    public List<Utente> findAll(){
+    public List<Utente> findAll() {
 
         List<Utente> listUtenti = new ArrayList<>();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(FIND_QUERY)){
+                PreparedStatement ps = conn.prepareStatement(FIND_QUERY)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Utente u = new Utente();
@@ -66,22 +69,58 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
-                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
+                u.setDataRegistrazione(
+                        DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 listUtenti.add(u);
             }
         } catch (SQLException ex) {
-            log.error("errore utenti non trovati: {}"+ex);
-            throw new RuntimeException("SQLException:"+ex);
+            log.error("errore utenti non trovati: {}" + ex);
+            throw new RuntimeException("SQLException:" + ex);
         }
-        log.info("lista utenti trovata:"+listUtenti.size());
+        log.info("lista utenti trovata:" + listUtenti.size());
         System.out.print(listUtenti);
         return listUtenti;
     }
 
-    public Optional<Utente> findById(Integer id){
+    @Override
+    public Map<String, Integer> findTopUsersByDaysLastMonth() {
+        String sql = "SELECT u.id, u.nome_user, u.cognome, " +
+                "SUM(p.data_fine - p.data_inizio) AS totale_giorni " +
+                "FROM public.utente u " +
+                "JOIN public.prenotazione p ON u.id = p.utente_id " +
+                "WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month' " +
+                "GROUP BY u.id, u.nome_user, u.cognome " +
+                "ORDER BY totale_giorni DESC " +
+                "LIMIT 5";
+
+        // LinkedHashMap per mantenere la classifica dal 1° al 5° posto
+        Map<String, Integer> topTravelers = new LinkedHashMap<>();
+
+        try (Connection conn = DataBaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // Uniamo nome e cognome per una chiave leggibile (aggiunto cognome alla SELECT)
+                String utente = rs.getString("nome_user") + " " + rs.getString("cognome");
+                int giorni = rs.getInt("totale_giorni");
+
+                topTravelers.put(utente, giorni);
+                log.info("Top Traveler trovato: {} con {} giorni prenotati", utente, giorni);
+            }
+
+        } catch (SQLException e) {
+            log.error("Errore nel recupero dei Top Travelers: ", e);
+            throw new RuntimeException("Errore SQL (getTopTravelersLastMonth)", e);
+        }
+
+        return topTravelers;
+    }
+
+    public Optional<Utente> findById(Integer id) {
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_ID)){
+                PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_ID)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -90,21 +129,22 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
-                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
+                u.setDataRegistrazione(
+                        DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
-            log.error("Errore durante il findById di Utente: {} "+ex);
-            throw new RuntimeException("SQLException: "+ex);
+            log.error("Errore durante il findById di Utente: {} " + ex);
+            throw new RuntimeException("SQLException: " + ex);
         }
-        log.info("Utente trovato: {}"+u.toString());
+        log.info("Utente trovato: {}" + u.toString());
         return Optional.empty();
     }
 
-    public Optional<Utente> findByEmail(String email){
+    public Optional<Utente> findByEmail(String email) {
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_EMAIL)){
+                PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_EMAIL)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -113,21 +153,22 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
-                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
+                u.setDataRegistrazione(
+                        DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
-            log.error("Errore durante il findByEmail di Utente: {} "+ex);
-            throw new RuntimeException("SQLException: "+ex);
+            log.error("Errore durante il findByEmail di Utente: {} " + ex);
+            throw new RuntimeException("SQLException: " + ex);
         }
-        log.info("Utente trovato: {} "+u.getClass().toString());
+        log.info("Utente trovato: {} " + u.getClass().toString());
         return Optional.empty();
     }
 
-    public Optional<Utente> findByUsername(String name){
+    public Optional<Utente> findByUsername(String name) {
         Utente u = new Utente();
         try (Connection conn = DataBaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_NAME)){
+                PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_NAME)) {
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -136,21 +177,22 @@ public class UtenteDAOImpl implements UtenteDAO {
                 u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setIndirizzoUser(rs.getString("indirizzo_user"));
-                u.setDataRegistrazione(DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
+                u.setDataRegistrazione(
+                        DataConverter.convertLocalDateTimeFromTimestamp(rs.getTimestamp("data_registrazione")));
                 return Optional.of(u);
             }
         } catch (SQLException ex) {
-            log.error("Errore durante il findById: {} ",ex);
-            throw new RuntimeException("SQLException: "+ex);
+            log.error("Errore durante il findById: {} ", ex);
+            throw new RuntimeException("SQLException: " + ex);
         }
-        log.info("Utente trovato: {} "+u.getClass().toString());
+        log.info("Utente trovato: {} " + u.getClass().toString());
         return Optional.empty();
     }
 
     // UPDATE
 
-    public Utente update(Utente u){
-        DBHelper.executeUpdate(UPDATE_QUERY, ps ->{
+    public Utente update(Utente u) {
+        DBHelper.executeUpdate(UPDATE_QUERY, ps -> {
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
@@ -162,9 +204,9 @@ public class UtenteDAOImpl implements UtenteDAO {
 
     // DELETE
 
-    public int deleteAll(){
+    public int deleteAll() {
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_ALL_QUERY)) {
+                PreparedStatement ps = conn.prepareStatement(DELETE_ALL_QUERY)) {
 
             int deleted = ps.executeUpdate();
             log.info("Eliminati utenti: {} ", deleted);
@@ -176,9 +218,9 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
     }
 
-    public boolean deleteById(Integer id){
+    public boolean deleteById(Integer id) {
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_ID)) {
+                PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_ID)) {
 
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -196,9 +238,9 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
     }
 
-    public boolean deleteByUsername(String nomeUser){
+    public boolean deleteByUsername(String nomeUser) {
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_NAME)) {
+                PreparedStatement ps = conn.prepareStatement(DELETE_QUERY_BY_NAME)) {
 
             ps.setString(1, nomeUser);
             int rowsAffected = ps.executeUpdate();
@@ -215,5 +257,4 @@ public class UtenteDAOImpl implements UtenteDAO {
             throw new RuntimeException("SQLException: ", ex);
         }
     }
-    
 }

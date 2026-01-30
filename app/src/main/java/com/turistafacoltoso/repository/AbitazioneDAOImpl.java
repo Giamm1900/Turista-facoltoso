@@ -1,5 +1,6 @@
 package com.turistafacoltoso.repository;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
     private static final String DELETE_ALL = "DELETE FROM abitazione";
     private static final String DELETE_BY_ID = "DELETE FROM abitazione WHERE id = ?";
     private static final String DELETE_BY_NAME = "DELETE FROM abitazione WHERE nome_abitazione = ?";
+    private static final String FIND_QUERY_BY_HOST_ID = "SELECT * FROM abitazione WHERE id_host = ?";
 
     @Override
     public Abitazione create(Abitazione a) {
@@ -72,6 +74,25 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
     }
 
     @Override
+    public List<Abitazione> findByHostId(int idHost) {
+        log.info("Ricerca abitazioni per HostID: {}", idHost);
+        List<Abitazione> result = new ArrayList<>();
+        try (Connection conn = DataBaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(FIND_QUERY_BY_HOST_ID)) {
+            ps.setInt(1, idHost);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapResultSetToAbitazione(rs));
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Errore findByHostId", e);
+        }
+        return result;
+
+    }
+
+    @Override
     public Optional<Abitazione> findById(Integer id) {
         return findSingleByParam(SELECT_BY_ID, id);
     }
@@ -96,7 +117,7 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
 
     @Override
     public List<Abitazione> findByNomeAbitazione(String name) {
-        log.info("ricerca abitazioni per nome {}",name);
+        log.info("ricerca abitazioni per nome {}", name);
         List<Abitazione> lA = new ArrayList<>();
 
         try (Connection conn = DataBaseConnection.getConnection();
@@ -132,6 +153,53 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
             log.error("Errore findByDataDisponibilita: ", e);
         }
         return result;
+    }
+
+    @Override
+    public Optional<Abitazione> findMostPopularLastMonth() {
+        String sql = "SELECT a.*, COUNT(p.id) as num_prenotazioni " +
+                "FROM abitazione a " +
+                "JOIN prenotazione p ON a.id = p.abitazione_id " +
+                "WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month' " +
+                "GROUP BY a.id " +
+                "ORDER BY num_prenotazioni DESC " +
+                "LIMIT 1";
+
+        try (Connection conn = DataBaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                // Usiamo il mapper che hai già creato per trasformare la riga in oggetto
+                return Optional.of(mapResultSetToAbitazione(rs));
+            }
+        } catch (SQLException e) {
+            log.error("Errore nella ricerca dell'abitazione più popolare: ", e);
+            throw new RuntimeException("Errore SQL (findMostPopularLastMonth)", e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public BigDecimal getMediaPostiLetto() {
+        String sql = "SELECT AVG(n_posti_letto)::NUMERIC(10,2) AS media_posti_letto FROM public.abitazione";
+
+        log.info("Calcolo media posti letto su tutte le abitazioni");
+
+        try (Connection conn = DataBaseConnection.getConnection();
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery(sql)) {
+
+            if (rs.next()) {
+                BigDecimal media = rs.getBigDecimal("media_posti_letto");
+                log.info("Media calcolata: {}", media);
+                return media != null ? media : BigDecimal.ZERO;
+            }
+        } catch (SQLException e) {
+            log.error("Errore durante il calcolo della media posti letto: ", e);
+            throw new RuntimeException("Errore SQL (getMediaPostiLetto)", e);
+        }
+        return BigDecimal.ZERO;
     }
 
     @Override
@@ -235,5 +303,4 @@ public class AbitazioneDAOImpl implements AbitazioneDAO {
         }
         return Optional.empty();
     }
-
 }

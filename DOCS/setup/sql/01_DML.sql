@@ -36,7 +36,7 @@ SELECT * FROM feedback;
 --1 Ottenere le abitazioni corrispondenti ad un certo codice host
 
 SELECT * 
-FROM abitazione a WHERE id = ?
+FROM abitazione a WHERE id_host = ?
 
 -- 2 Ottenere l'ultima prenotazione dato un id utente
 

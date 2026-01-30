@@ -22,6 +22,8 @@ public interface PrenotazioneDAO {
 
     List<Prenotazione> findByUtenteId(Integer idUtente);
 
+    Optional<Prenotazione> findLatestByUtenteId(int utenteId);
+
     // UPDATE
 
     Optional<Prenotazione> update(Prenotazione p);
