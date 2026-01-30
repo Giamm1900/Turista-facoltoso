@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.turistafacoltoso.controller.AbitazioneController;
+import com.turistafacoltoso.controller.FeedbackController;
 import com.turistafacoltoso.controller.HostController;
+import com.turistafacoltoso.controller.PrenotazioneController;
 import com.turistafacoltoso.controller.UtenteController;
+import com.turistafacoltoso.model.Feedback;
 import com.turistafacoltoso.util.DataBaseConnection;
 
 import io.javalin.Javalin;
@@ -44,5 +47,11 @@ public class App
 
         AbitazioneController abitazioneController = new AbitazioneController();
         abitazioneController.registerRoutes(app);
+
+        PrenotazioneController prenotazioneController = new PrenotazioneController();
+        prenotazioneController.registerRoutes(app);
+
+        FeedbackController feedbackController = new FeedbackController();
+        feedbackController.registerRoutes(app);
     }
 }
