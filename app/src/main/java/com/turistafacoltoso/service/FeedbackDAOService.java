@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FeedbackDAOService {
     private final FeedbackDAO feedbackDAO;
     private final HostDAOService hostDAOService;
-    private final PrenotazioneDAOService prenotazioneDAOService;
+    private final PrenotazioneDAOService prenotazioneDAOService;  
 
     public FeedbackDAOService(){
         this.feedbackDAO = new FeedbackDAOImpl();

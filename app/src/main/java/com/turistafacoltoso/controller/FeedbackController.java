@@ -1,0 +1,117 @@
+package com.turistafacoltoso.controller;
+
+
+import java.util.Optional;
+
+import com.turistafacoltoso.exception.FeedbackNotFoundException;
+import com.turistafacoltoso.model.Abitazione;
+import com.turistafacoltoso.model.Feedback;
+import com.turistafacoltoso.service.FeedbackDAOService;
+
+import io.javalin.Javalin;
+import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class FeedbackController {
+    private final FeedbackDAOService feedbackDAOService;
+
+    public FeedbackController(){
+        this.feedbackDAOService = new FeedbackDAOService();
+    }
+
+    public void registerRoutes(Javalin app){
+        // CREATE
+        app.post("/api/v1/feedback",this::createFeedback);
+
+        // READ
+        app.get("/api/v1/feedback",this::getAllFeedback);
+        app.get("/api/v1/feedback/{id}",this::getFeedbackById);
+        app.get("/api/v1/feedback/punteggio/{punteggio}",this::getFeedbackByPunteggio);
+
+        // UPDATE
+        app.put("/api/v1/feedback/{id}", this::updateFeedback);
+
+        // DELETE
+        app.delete("/api/v1/feedback/{}", this::deleteFeedbackById);
+    }
+
+    private void createFeedback(Context ctx){
+        log.info("POST api/v1/feedback");
+        Feedback f = ctx.bodyAsClass(Feedback.class);
+
+        if (feedbackDAOService.getFeedbackById(f.getId()).isPresent()) {
+            log.error("errore nella creazione del feedback");
+            ctx.status(HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("campi non corretti");
+        }
+
+        Feedback created = feedbackDAOService.insertFeedback(
+            f.getTitolo(),
+            f.getTesto(), f.getPunteggio(), f.getPrenotazioneId(), f.getIdHost());
+        
+        ctx.status(HttpStatus.CREATED);
+        ctx.json(created);
+    }
+
+    private void getAllFeedback(Context ctx){
+        log.info("GET api/v1/feedback");
+        ctx.json(feedbackDAOService.getAllFeedback());
+    }
+
+    private void getFeedbackById(Context ctx){
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        log.info("GET api/v1/feedback/{id} - ricerca per id", id);
+
+        Optional<Feedback> f = feedbackDAOService.getFeedbackById(id);
+
+        if (f.isPresent()) {
+            ctx.json(f.get()); 
+        }else {
+            ctx.status(HttpStatus.NOT_FOUND);
+            ctx.json(("Abitazione non trovata"));
+        }
+    }
+
+    private void getFeedbackByPunteggio(Context ctx){
+        int punteggio = Integer.parseInt(ctx.pathParam("punteggio"));
+        log.info("GET api/v1/feedback/punteggio/{punteggio} - ricerca per punteggio", punteggio);
+        ctx.json(feedbackDAOService.getFeedbackByPunteggio(punteggio));
+    }
+
+    // private void getFeedbackByIdHost(Context ctx){
+    //     int idHost = Integer.parseInt(ctx.pathParam("idHost"));
+    //     log.info("GET api/v1/feedback/host/{id} - ricerca per punteggio", idHost);
+    //     ctx.json(feedbackDAOService.getFeedbackByIdHost(idHost));
+    // }
+
+    private void updateFeedback(Context ctx){
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        Feedback f = ctx.bodyAsClass(Feedback.class);
+        f.setId(id); // Assicuriamo che l'ID sia quello del path
+
+        log.info("PUT /api/v1/feedback/{} - Aggiornamento", id);
+        
+        Optional<Feedback> updated = feedbackDAOService.updateFeedback(f);
+        if (updated.isPresent()) {
+            ctx.json(updated.get());
+        } else {
+            ctx.status(HttpStatus.NOT_FOUND);
+            throw new FeedbackNotFoundException("Impossibile aggiornare: abitazione non esistente");
+        }
+    }
+
+    private void deleteFeedbackById(Context ctx){
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        log.info("DELETE /api/v1/feedback/{} - Cancellazione", id);
+
+        if (feedbackDAOService.deleteFeedbackById(id)) {
+            ctx.status(HttpStatus.OK);
+            ctx.json(("Abitazione eliminata con successo"));
+        } else {
+            ctx.status(HttpStatus.NOT_FOUND);
+            ctx.json(("Abitazione non trovata"));
+        }
+    }
+}
