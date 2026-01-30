@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.turistafacoltoso.exception.AbitazioneNotFoundException;
 import com.turistafacoltoso.model.Abitazione;
 import com.turistafacoltoso.repository.AbitazioneDAOImpl;
 import com.turistafacoltoso.repository.dao.AbitazioneDAO;
@@ -43,6 +44,10 @@ public class AbitazioneDAOService {
      */
     public List<Abitazione> getAllAbitazioni() {
         log.info("Recupero di tutte le abitazioni");
+        if (abitazioneDAO.findAll().isEmpty()) {
+            log.error("Error method getAllAbitazioni");
+            throw new AbitazioneNotFoundException("abitazioni non trovate {}");
+        }
         return abitazioneDAO.findAll();
     }
 
@@ -59,6 +64,10 @@ public class AbitazioneDAOService {
      */
     public List<Abitazione> getAbitazioniByLocali(int nLocali) {
         log.info("Ricerca abitazioni con {} locali", nLocali);
+        if (nLocali <= 0) {
+            log.error("non ci sono abitazioni con 0 posti");
+            throw new AbitazioneNotFoundException("le abitazioni non possono avere 0 posti");
+        }
         return abitazioneDAO.findByNLocali(nLocali);
     }
 
