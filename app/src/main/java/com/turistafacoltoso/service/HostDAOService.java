@@ -1,6 +1,7 @@
 package com.turistafacoltoso.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.turistafacoltoso.exception.DuplicateHostException;
@@ -8,7 +9,6 @@ import com.turistafacoltoso.exception.HostNotFoundException;
 import com.turistafacoltoso.model.Host;
 import com.turistafacoltoso.repository.HostDAOImpl;
 import com.turistafacoltoso.repository.dao.HostDAO;
-
 public class HostDAOService {
     private final HostDAO hostDAO;
     private final UtenteDAOService utenteService;
@@ -45,6 +45,10 @@ public class HostDAOService {
 
     public Optional<Host> getHostById(int id) {
         return hostDAO.findById(id); // Assumendo che il DAO dell'Host restituisca un Optional
+    }
+
+    public Map<String, Integer> findTopHostsLastMonthS(){
+        return hostDAO.findTopHostsLastMonth();
     }
 
     // ==================== UPDATE ====================

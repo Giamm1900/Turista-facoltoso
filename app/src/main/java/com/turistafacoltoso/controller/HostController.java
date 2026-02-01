@@ -31,6 +31,7 @@ public class HostController {
         // READ
         app.get("/api/v1/hosts", this::getAllHosts);
         app.get("/api/v1/hosts/{id}", this::getHostById);
+        app.get("/api/v1/top-hosts",this::getTopHosts);
 
         // UPDATE
         app.put("/api/v1/hosts/{id}", this::updateHost);
@@ -84,6 +85,16 @@ public class HostController {
             ctx.status(HttpStatus.NOT_FOUND);
             ctx.json(buildErrorResponse(ex.getMessage()));
         }
+    }
+
+    private void getTopHosts(Context ctx){
+        log.info("GET /api/v1/top-hosts");
+        Map<String,Integer> hosts = hostService.findTopHostsLastMonthS();
+        if (hosts.isEmpty()) {
+            log.warn("nessun host trovato");
+        }
+        ctx.status(HttpStatus.OK);
+        ctx.json(hosts);
     }
 
     // ==================== UPDATE ====================

@@ -3,7 +3,6 @@ package com.turistafacoltoso.controller;
 import java.util.Optional;
 
 import com.turistafacoltoso.exception.FeedbackNotFoundException;
-import com.turistafacoltoso.model.Abitazione;
 import com.turistafacoltoso.model.Feedback;
 import com.turistafacoltoso.service.FeedbackDAOService;
 

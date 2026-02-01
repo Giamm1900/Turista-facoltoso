@@ -39,3 +39,4 @@ buildNumber.properties
 app/src/main/resources/config.properties
 .env
 DOCS/ex.md
+frontend-turista/node_modules
