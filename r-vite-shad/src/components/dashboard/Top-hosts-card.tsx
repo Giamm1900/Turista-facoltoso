@@ -7,7 +7,7 @@ interface TopHostsValue {
   nome: string;
   numero: number;
 }
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 const TophostsCard = () => {
   const [topHosts, setTopHost] = useState<TopHostsValue[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,18 +18,30 @@ const TophostsCard = () => {
         const res = await fetch(`${API_URL}/api/v1/top-hosts`);
         if (!res.ok) throw new Error("Errore nel recupero dati");
         const data = await res.json();
-        setTopHost(data);
-        console.log(topHosts);
+
+        // ✅ Converti Map (oggetto) in array e ordina per numero decrescente
+        const hostsArray: TopHostsValue[] = Object.entries(data)
+          .map(([nome, numero]) => ({ nome, numero: numero as number }))
+          .sort((a, b) => b.numero - a.numero)
+          .slice(0, 5); // Prendi solo i top 5
+
+        console.log("Top hosts:", hostsArray);
+        setTopHost(hostsArray);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Errore sconosciuto");
       }
     };
     loadTopHost();
-  }, []);
+  }, []); // ✅ Dipendenze vuote
 
   // 1. Stato di Caricamento
-  if (error) return <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>;
-  
+  if (error)
+    return (
+      <Alert variant="destructive">
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
+
   // 2. Stato Loading (Skeleton)
   if (!topHosts) {
     return (
@@ -45,19 +57,22 @@ const TophostsCard = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {topHosts.map((host, index) => (
-        <Card key={index} className="rounded-2xl shadow-sm border-l-4 border-l-primary">
+        <Card
+          key={index}
+          className="rounded-2xl shadow-sm"
+        >
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Top Host #{index + 1}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-1">
-            <span className="text-lg font-semibold truncate">
-              {host.nome}
-            </span>
+            <span className="text-lg font-semibold truncate">{host.nome}</span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold">{host.numero}</span>
-              <span className="text-xs text-muted-foreground">Prenotazioni</span>
+              <span className="text-xs text-muted-foreground">
+                Prenotazioni
+              </span>
             </div>
           </CardContent>
         </Card>
