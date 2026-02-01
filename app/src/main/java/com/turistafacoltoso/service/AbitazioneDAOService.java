@@ -79,6 +79,10 @@ public class AbitazioneDAOService {
         return abitazioneDAO.findByDataDisponibilita(inizio, fine);
     }
 
+    public List<Abitazione> findByIdHost(int idHost){
+        return abitazioneDAO.findByHostId(idHost);
+    }
+
     /**
      * Aggiorna i dati di un'abitazione esistente.
      */

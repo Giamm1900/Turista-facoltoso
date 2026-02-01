@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.turistafacoltoso.exception.DuplicateHostException;
 import com.turistafacoltoso.exception.HostNotFoundException;
+import com.turistafacoltoso.model.Abitazione;
 import com.turistafacoltoso.model.Host;
 import com.turistafacoltoso.repository.HostDAOImpl;
 import com.turistafacoltoso.repository.dao.HostDAO;

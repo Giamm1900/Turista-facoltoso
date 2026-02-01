@@ -31,6 +31,7 @@ public class AbitazioneController {
         app.get("/api/v1/abitazioni/{id}", this::getAbitazioneById);
         app.get("/api/v1/abitazioni/locali/{n}", this::getAbitazioniByLocali);
         app.get("/api/v1/abitazioni/search/disponibilita", this::getAbitazioniDisponibili);
+        app.get("/api/v1/abitazioni/hosts/{id}", this::getAbitazionperCodiceHost);
 
         // UPDATE
         app.put("/api/v1/abitazioni/{id}", this::updateAbitazione);
@@ -68,6 +69,12 @@ public class AbitazioneController {
     private void getAllAbitazioni(Context ctx) {
         log.info("GET /api/v1/abitazioni - Lista completa");
         ctx.json(abitazioneService.getAllAbitazioni());
+    }
+
+    public void getAbitazioniByHostId(Context ctx){
+        log.info("GET /api/v1/abitazioni/hosts/{id}");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        abitazioneService.findByIdHost(id);
     }
 
     private void getAbitazioneById(Context ctx) {
