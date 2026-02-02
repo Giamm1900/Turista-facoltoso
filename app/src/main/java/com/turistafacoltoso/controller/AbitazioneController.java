@@ -31,7 +31,7 @@ public class AbitazioneController {
         app.get("/api/v1/abitazioni/{id}", this::getAbitazioneById);
         app.get("/api/v1/abitazioni/locali/{n}", this::getAbitazioniByLocali);
         app.get("/api/v1/abitazioni/search/disponibilita", this::getAbitazioniDisponibili);
-        app.get("/api/v1/abitazioni/hosts/{id}", this::getAbitazionperCodiceHost);
+        app.get("/api/v1/abitazioni/hosts/{id}", this::getAbitazioniByHostId);
 
         // UPDATE
         app.put("/api/v1/abitazioni/{id}", this::updateAbitazione);
@@ -97,7 +97,6 @@ public class AbitazioneController {
     }
 
     private void getAbitazioniDisponibili(Context ctx) {
-        // Esempio parametri: ?inizio=2023-01-01&fine=2023-01-10
         LocalDate inizio = LocalDate.parse(ctx.queryParam("inizio"));
         LocalDate fine = LocalDate.parse(ctx.queryParam("fine"));
         
