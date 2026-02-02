@@ -30,6 +30,7 @@ public class PrenotazioneController {
         app.get("/api/v1/prenotazioni", this::getAllPrenotazioni);
         app.get("/api/v1/prenotazioni/{id}", this::getPrenotazioneById);
         app.get("/api/v1/prenotazioni/utente/{idUtente}", this::getPrenotazioniByUtente);
+        app.get("/api/v1/prenotazioni/latest/utente/{id}", this::getLatestReservationByUtenteId);
 
         // UPDATE
         app.put("/api/v1/prenotazioni/{id}", this::updatePrenotazione);
@@ -76,8 +77,8 @@ public class PrenotazioneController {
     }
 
     private void getPrenotazioneById(Context ctx) {
-        int id = Integer.parseInt(ctx.pathParam("id"));
         log.info("GET /api/v1/prenotazioni/{} - Ricerca per ID", id);
+        int id = Integer.parseInt(ctx.pathParam("id"));
 
         Optional<Prenotazione> p = prenotazioneService.getPrenotazioneById(id);
         if (p.isPresent()) {
@@ -88,9 +89,15 @@ public class PrenotazioneController {
     }
 
     private void getPrenotazioniByUtente(Context ctx) {
+        log.info("GET /api/v1/prenotazioni/utente/{} - Recupero viaggi utente");
         int idUtente = Integer.parseInt(ctx.pathParam("idUtente"));
-        log.info("GET /api/v1/prenotazioni/utente/{} - Recupero viaggi utente", idUtente);
         ctx.json(prenotazioneService.getPrenotazioniByUtente(idUtente));
+    }
+
+    private void getLatestReservationByUtenteId(Context ctx){
+        log.info("GET /api/v1/prenotazioni/latest/utente/{id}");
+        int idUtente = Integer.parseInt(ctx.pathParam("id"));
+        ctx.json(prenotazioneService.getLastReservation(idUtente));
     }
 
     // ==================== UPDATE ====================

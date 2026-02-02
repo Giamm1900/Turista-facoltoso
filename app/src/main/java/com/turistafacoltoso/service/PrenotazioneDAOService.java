@@ -23,13 +23,9 @@ public class PrenotazioneDAOService {
         this.abitazioneService = new AbitazioneDAOService();
     }
 
-    /**
-     * Logica di business per creare una prenotazione
-     */
     public Prenotazione insertPrenotazione(int idUtente, int idAbitazione, LocalDate dataInizio, LocalDate dataFine) {
         log.info("Richiesta prenotazione: Utente {} per Abitazione {} [{} / {}]", idUtente, idAbitazione, dataInizio, dataFine);
 
-        // 1. Validazione date (Backend check)
         if (dataFine.isBefore(dataInizio) || dataFine.isEqual(dataInizio)) {
             throw new IllegalArgumentException("La data di fine deve essere successiva a quella di inizio.");
         }
@@ -37,20 +33,16 @@ public class PrenotazioneDAOService {
             throw new IllegalArgumentException("Non è possibile prenotare una data nel passato.");
         }
 
-        // 2. Controllo disponibilità Abitazione (Orchestrazione tra Service)
         Optional<Abitazione> abitazioneOpt = abitazioneService.getAbitazioneById(idAbitazione);
         if (abitazioneOpt.isEmpty()) {
             throw new RuntimeException("L'abitazione selezionata non esiste.");
         }
 
         Abitazione ab = abitazioneOpt.get();
-        // Verifichiamo che le date richieste siano comprese nel range di disponibilità dell'abitazione
         if (dataInizio.isBefore(ab.getDisponibilitaInizio()) || dataFine.isAfter(ab.getDisponibilitaFine())) {
             throw new IllegalArgumentException("L'abitazione non è disponibile nel periodo richiesto. Disponibilità: " 
                     + ab.getDisponibilitaInizio() + " - " + ab.getDisponibilitaFine());
         }
-
-        // 3. Creazione oggetto e salvataggio
         Prenotazione p = new Prenotazione();
         p.setUtenteId(idUtente);
         p.setAbitazioneId(idAbitazione);
@@ -85,6 +77,10 @@ public class PrenotazioneDAOService {
             throw new PrenotazioneNotFoundException("l'idUtente non può essere nullo o 0");
         }
         return prenotazioneDAO.findByUtenteId(idUtente);
+    }
+
+    public Optional<Prenotazione> getLastReservation(int idUtente){
+        return prenotazioneDAO.findLatestByUtenteId(idUtente);
     }
 
     // ==================== UPDATE ====================
