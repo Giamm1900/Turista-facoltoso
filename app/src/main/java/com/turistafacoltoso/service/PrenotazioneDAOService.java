@@ -80,6 +80,9 @@ public class PrenotazioneDAOService {
     }
 
     public Optional<Prenotazione> getLastReservation(int idUtente){
+        if (idUtente<= 0) {
+            throw new PrenotazioneNotFoundException("errore ultima prenotazione non trovata id deve essere maggiore di 0");
+        }
         return prenotazioneDAO.findLatestByUtenteId(idUtente);
     }
 

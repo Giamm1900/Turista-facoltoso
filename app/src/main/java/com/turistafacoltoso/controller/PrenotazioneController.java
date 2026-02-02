@@ -77,7 +77,7 @@ public class PrenotazioneController {
     }
 
     private void getPrenotazioneById(Context ctx) {
-        log.info("GET /api/v1/prenotazioni/{} - Ricerca per ID", id);
+        log.info("GET /api/v1/prenotazioni/{} - Ricerca per ID");
         int id = Integer.parseInt(ctx.pathParam("id"));
 
         Optional<Prenotazione> p = prenotazioneService.getPrenotazioneById(id);
@@ -97,7 +97,13 @@ public class PrenotazioneController {
     private void getLatestReservationByUtenteId(Context ctx){
         log.info("GET /api/v1/prenotazioni/latest/utente/{id}");
         int idUtente = Integer.parseInt(ctx.pathParam("id"));
-        ctx.json(prenotazioneService.getLastReservation(idUtente));
+        Optional<Prenotazione> p = prenotazioneService.getLastReservation(idUtente);
+
+        if (p.isPresent()) {
+            ctx.json(p.get());   
+        }else{
+            ctx.status(HttpStatus.NOT_FOUND).json(buildErrorResponse("prenotazione non trovata"), getClass());
+        }
     }
 
     // ==================== UPDATE ====================

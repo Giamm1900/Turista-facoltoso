@@ -18,8 +18,6 @@ const TophostsCard = () => {
         const res = await fetch(`${API_URL}/api/v1/top-hosts`);
         if (!res.ok) throw new Error("Errore nel recupero dati");
         const data = await res.json();
-
-        // ✅ Converti Map (oggetto) in array e ordina per numero decrescente
         const hostsArray: TopHostsValue[] = Object.entries(data)
           .map(([nome, numero]) => ({ nome, numero: numero as number }))
           .sort((a, b) => b.numero - a.numero)

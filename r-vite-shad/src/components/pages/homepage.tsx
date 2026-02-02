@@ -1,13 +1,11 @@
-import { Outlet } from "react-router";
-import Navbar from "../layout/navbar";
 import TophostsCard from "../dashboard/Top-hosts-card";
+import { Outlet } from "react-router";
 
 const Homepage = () => {
   return (
     <div className="w-full">
-      <Navbar />
-      <main className="p-4 flex flex-col items-center">
-        <TophostsCard/>
+      <main className="flex flex-col items-center p-4 space-y-4">
+        <TophostsCard />
         <Outlet />
       </main>
     </div>

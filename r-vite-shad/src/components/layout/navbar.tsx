@@ -10,7 +10,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full border-b bg-background">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+      <div className="mx-auto flex h-16 items-center justify-between px-4">
         <Link to={"/"} className="text-lg font-semibold">Back-Office</Link>
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-6">
@@ -25,7 +25,7 @@ export default function Navbar() {
                 <Link to={"/prenotazioni"}>Reservations</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-                <Link to={"/"}>homes</Link>
+                <Link to={"/hosts"}>Hosts</Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -39,18 +39,18 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-64">
               <div className="flex flex-col gap-6 pt-6">
-                <a href="#" className="text-sm font-medium" onClick={() => setOpen(false)}>
+                <Link to={"/"} className="text-sm font-medium" onClick={() => setOpen(false)}>
                   Home
-                </a>
-                <a href="#" className="text-sm font-medium" onClick={() => setOpen(false)}>
-                  Features
-                </a>
-                <a href="#" className="text-sm font-medium" onClick={() => setOpen(false)}>
-                  Pricing
-                </a>
-                <a href="#" className="text-sm font-medium" onClick={() => setOpen(false)}>
-                  Contact
-                </a>
+                </Link>
+                <Link to={"/abitazioni"} className="text-sm font-medium" onClick={() => setOpen(false)}>
+                  Homes
+                </Link>
+                <Link to={"/prenotazioni"} className="text-sm font-medium" onClick={() => setOpen(false)}>
+                  Reservations
+                </Link>
+                <Link to={"/Hosts"} className="text-sm font-medium" onClick={() => setOpen(false)}>
+                  Hosts
+                </Link>
               </div>
             </SheetContent>
           </Sheet>
