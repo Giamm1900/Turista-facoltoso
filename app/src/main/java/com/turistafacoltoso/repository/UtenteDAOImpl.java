@@ -193,8 +193,7 @@ public class UtenteDAOImpl implements UtenteDAO {
         DBHelper.executeUpdate(UPDATE_QUERY, ps -> {
             ps.setString(1, u.getNomeUser());
             ps.setString(2, u.getCognome());
-            ps.setString(3, u.getEmail());
-            ps.setString(4, u.getIndirizzoUser());
+            ps.setString(3, u.getIndirizzoUser());
             ps.setInt(4, u.getId());
         });
         log.info("utente update {} : ", u.toString());
