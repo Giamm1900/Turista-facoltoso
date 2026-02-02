@@ -1,8 +1,23 @@
 import type { Host } from "@/types/types";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
+import { Trash, TrashIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -26,7 +41,7 @@ const Hosts = () => {
     loadHosts();
   }, []);
 
-    if (!hosts) {
+  if (!hosts) {
     return (
       <Card>
         <CardHeader>
@@ -43,14 +58,12 @@ const Hosts = () => {
       </Card>
     );
   }
-return (
+  return (
     <>
       <Card>
         <CardHeader>
           <CardTitle>Tutti gli Hosts</CardTitle>
-          <CardDescription>
-            Totale Hosts: {hosts.length}
-          </CardDescription>
+          <CardDescription>Totale Hosts: {hosts.length}</CardDescription>
 
           {/* Barra di ricerca
           <div className="relative mt-4">
@@ -81,25 +94,31 @@ return (
                     <TableHead>Email</TableHead>
                     <TableHead>Indirizzo</TableHead>
                     <TableHead>Data Registrazione</TableHead>
+                    <TableHead>Elimina</TableHead>
                   </TableRow>
                 </TableHeader>
-                
+
                 <TableBody>
                   {hosts.map((host) => (
                     <TableRow key={host.id}>
-                      <TableCell className="font-medium">
-                        #{host.id}
-                      </TableCell>
+                      <TableCell className="font-medium">#{host.id}</TableCell>
                       <TableCell>{host.idUtente}</TableCell>
                       <TableCell>{host.nomeUser}</TableCell>
                       <TableCell>{host.cognome}</TableCell>
                       <TableCell>{host.email}</TableCell>
                       <TableCell>{host.indirizzoUser}</TableCell>
                       <TableCell>
-                        {host.dataRegistrazione 
-                          ? new Date(host.dataRegistrazione).toLocaleString('it-IT')
+                        {host.dataRegistrazione
+                          ? new Date(host.dataRegistrazione).toLocaleString(
+                              "it-IT",
+                            )
                           : "N/A"}
                       </TableCell>
+                      <Button variant="destructive">
+                        <TableCell>
+                          <Trash />
+                        </TableCell>
+                      </Button>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -110,6 +129,6 @@ return (
       </Card>
     </>
   );
-}
+};
 
-export default Hosts
+export default Hosts;

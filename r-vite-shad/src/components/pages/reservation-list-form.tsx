@@ -18,8 +18,9 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Trash } from "lucide-react";
 import LastReservation from "../dashboard/last-reservation";
+import { Button } from "../ui/button";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -133,6 +134,7 @@ const Reservation = () => {
                     <TableHead>Data Fine</TableHead>
                     <TableHead>Data Creazione</TableHead>
                     <TableHead>Abitazione ID</TableHead>
+                    <TableHead>Elimina</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -150,6 +152,11 @@ const Reservation = () => {
                           : "N/A"}
                       </TableCell>
                       <TableCell>{reservation.abitazioneId || "N/A"}</TableCell>
+                      <Button variant="destructive">
+                        <TableCell>
+                          <Trash />
+                        </TableCell>
+                      </Button>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Button } from "../ui/button";
+import { Trash } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -82,7 +84,8 @@ return (
                     <TableHead>Disponibilità fine</TableHead>
                     <TableHead>Id Host</TableHead>
                     <TableHead>Numero Locali</TableHead> 
-                    <TableHead>Numero Posti Letto</TableHead> 
+                    <TableHead>Numero Posti Letto</TableHead>
+                    <TableHead>Elimina</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -103,6 +106,11 @@ return (
                       <TableCell>{residence.idHost || "N/A"}</TableCell>
                       <TableCell>{residence.nlocali || "N/A"}</TableCell>
                       <TableCell>{residence.npostiLetto || "N/A"}</TableCell>
+                      <Button variant="destructive">
+                        <TableCell>
+                          <Trash />
+                        </TableCell>
+                      </Button>
                     </TableRow>
                   ))}
                 </TableBody>
