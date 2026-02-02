@@ -25,7 +25,7 @@ public class UtenteDAOImpl implements UtenteDAO {
     private static final String FIND_QUERY_BY_ID = "SELECT * FROM utente WHERE id = ? LIMIT 1 ";
     private static final String FIND_QUERY_BY_NAME = "SELECT * FROM utente WHERE nome_user = ? ";
     private static final String FIND_QUERY_BY_EMAIL = "SELECT * FROM utente WHERE email = ? LIMIT 1 ";
-    private static final String UPDATE_QUERY = "UPDATE public.utente SET nome_user = ?, cognome = ?, email = ?, indirizzo_user = ? ";
+    private static final String UPDATE_QUERY = "UPDATE public.utente SET nome_user = ?, cognome = ?, indirizzo_user = ? WHERE id = ? ";
     private static final String DELETE_ALL_QUERY = "DELETE FROM utente";
     private static final String DELETE_QUERY_BY_ID = "DELETE FROM utente WHERE id = ?";
     private static final String DELETE_QUERY_BY_NAME = "DELETE FROM utente WHERE nome_user = ?";
@@ -93,7 +93,6 @@ public class UtenteDAOImpl implements UtenteDAO {
                 "ORDER BY totale_giorni DESC " +
                 "LIMIT 5";
 
-        // LinkedHashMap per mantenere la classifica dal 1° al 5° posto
         Map<String, Integer> topTravelers = new LinkedHashMap<>();
 
         try (Connection conn = DataBaseConnection.getConnection();
@@ -101,7 +100,6 @@ public class UtenteDAOImpl implements UtenteDAO {
                 ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                // Uniamo nome e cognome per una chiave leggibile (aggiunto cognome alla SELECT)
                 String utente = rs.getString("nome_user") + " " + rs.getString("cognome");
                 int giorni = rs.getInt("totale_giorni");
 
@@ -197,6 +195,7 @@ public class UtenteDAOImpl implements UtenteDAO {
             ps.setString(2, u.getCognome());
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getIndirizzoUser());
+            ps.setInt(4, u.getId());
         });
         log.info("utente update {} : ", u.toString());
         return u;

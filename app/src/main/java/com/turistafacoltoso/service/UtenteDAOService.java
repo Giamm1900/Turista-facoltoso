@@ -57,10 +57,6 @@ public class UtenteDAOService {
         if (userDAO.findById(u.getId()).isEmpty()) {
             throw new UtenteNotFoundException(u.getId());
         }
-        if (userDAO.findByEmail(u.getEmail()).isPresent()) {
-            log.warn("Email già esistente Email:{}",u.getEmail());
-            throw new DuplicateUtenteException("email",u.getEmail());
-        }
         return userDAO.update(u);
     }
 
