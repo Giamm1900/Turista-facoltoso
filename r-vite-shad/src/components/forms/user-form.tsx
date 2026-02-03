@@ -57,7 +57,6 @@ const UserFormDialog = ({ user, onSuccess, trigger }: UserFormDialogProps) => {
     },
   });
 
-  // Reset dei campi quando cambia l'utente o si chiude il dialog
   useEffect(() => {
     if (open) {
       reset({
@@ -132,6 +131,7 @@ const UserFormDialog = ({ user, onSuccess, trigger }: UserFormDialogProps) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
           <div className="grid grid-cols-2 gap-4">
+
             <div className="space-y-2">
               <Label htmlFor="nomeUser">Nome</Label>
               <Input
@@ -145,6 +145,8 @@ const UserFormDialog = ({ user, onSuccess, trigger }: UserFormDialogProps) => {
                 </p>
               )}
             </div>
+
+
             <div className="space-y-2">
               <Label htmlFor="cognome">Cognome</Label>
               <Input
@@ -158,6 +160,8 @@ const UserFormDialog = ({ user, onSuccess, trigger }: UserFormDialogProps) => {
                 </p>
               )}
             </div>
+
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

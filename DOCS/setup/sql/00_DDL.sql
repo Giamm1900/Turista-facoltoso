@@ -62,20 +62,21 @@ CREATE TABLE public.prenotazione (
 
 CREATE TABLE public.feedback (
     id SERIAL PRIMARY KEY,
-    id_host INTEGER NOT NULL,
+    id_utente INTEGER NOT NULL, 
+    id_abitazione INTEGER NOT NULL, 
     titolo VARCHAR(150) NOT NULL,
     testo TEXT NOT NULL,
     punteggio INTEGER NOT NULL CHECK (punteggio BETWEEN 1 AND 5),
-    prenotazione_id INTEGER NOT NULL UNIQUE,
+    prenotazione_id INTEGER NOT NULL,
     data_publicazione TIMESTAMP DEFAULT NOW(),
-    CONSTRAINT fk_feedback_prenotazione
+    CONSTRAINT fk_feedback_prenotazione 
         FOREIGN KEY (prenotazione_id)
         REFERENCES prenotazione(id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_feedback_host
-        FOREIGN KEY (id_host)
-        REFERENCES host(id)
-        ON DELETE CASCADE
+    CONSTRAINT fk_feedback_utente
+        FOREIGN KEY (id_utente) REFERENCES utente(id),
+    CONSTRAINT fk_feedback_abitazione 
+        FOREIGN KEY (id_abitazione) REFERENCES abitazione(id) 
 );
 
 

@@ -18,7 +18,6 @@ import { Input } from "../ui/input";
 import { Alert, AlertDescription } from "../ui/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// Schema validazione con coercizione per i numeri
 const residenceSchema = z.object({
   nomeAbitazione: z.string().min(2, "Nome troppo breve"),
   indirizzoAbitazione: z.string().min(2, "Indirizzo obbligatorio"),
@@ -67,7 +66,6 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
   useEffect(() => {
     if (open) {
       if (residence) {
-        // Formattazione date per input type="date" (YYYY-MM-DD)
         const formatDate = (dateStr: string) => dateStr ? new Date(dateStr).toISOString().split('T')[0] : "";
         
         reset({
@@ -134,49 +132,49 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
 
         <form onSubmit={onSubmit} className="space-y-4 py-2">
           <div className="grid grid-cols-2 gap-4">
-            {/* Nome */}
+
             <div className="col-span-2 space-y-1">
               <Label>Nome Abitazione</Label>
               <Input {...register("nomeAbitazione")} />
               {errors.nomeAbitazione && <p className="text-xs text-destructive">{errors.nomeAbitazione.message}</p>}
             </div>
 
-            {/* Indirizzo */}
+
             <div className="col-span-2 space-y-1">
               <Label>Indirizzo</Label>
               <Input {...register("indirizzoAbitazione")} />
               {errors.indirizzoAbitazione && <p className="text-xs text-destructive">{errors.indirizzoAbitazione.message}</p>}
             </div>
 
-            {/* Locali */}
+            
             <div className="space-y-1">
               <Label>Locali</Label>
               <Input type="number" {...register("nlocali",{valueAsNumber:true})} />
               {errors.nlocali && <p className="text-xs text-destructive">{errors.nlocali.message}</p>}
             </div>
 
-            {/* Posti Letto */}
+            
             <div className="space-y-1">
               <Label>Posti Letto</Label>
               <Input type="number" {...register("npostiLetto",{valueAsNumber:true})} />
               {errors.npostiLetto && <p className="text-xs text-destructive">{errors.npostiLetto.message}</p>}
             </div>
 
-            {/* Prezzo */}
+            
             <div className="space-y-1">
               <Label>Prezzo/Notte (€)</Label>
               <Input type="number" step="0.01" {...register("prezzoPerNotte",{valueAsNumber:true})} />
               {errors.prezzoPerNotte && <p className="text-xs text-destructive">{errors.prezzoPerNotte.message}</p>}
             </div>
 
-            {/* ID Host */}
+            
             <div className="space-y-1">
               <Label>ID Host</Label>
               <Input type="number" {...register("idHost",{valueAsNumber:true})} />
               {errors.idHost && <p className="text-xs text-destructive">{errors.idHost.message}</p>}
             </div>
 
-            {/* Date */}
+            
             <div className="space-y-1">
               <Label>Inizio Disponibilità</Label>
               <Input type="date" {...register("disponibilitaInizio")} />

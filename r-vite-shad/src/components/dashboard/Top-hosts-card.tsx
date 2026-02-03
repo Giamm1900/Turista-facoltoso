@@ -30,9 +30,8 @@ const TophostsCard = () => {
       }
     };
     loadTopHost();
-  }, []); // ✅ Dipendenze vuote
+  }, []);
 
-  // 1. Stato di Caricamento
   if (error)
     return (
       <Alert variant="destructive">
@@ -40,7 +39,6 @@ const TophostsCard = () => {
       </Alert>
     );
 
-  // 2. Stato Loading (Skeleton)
   if (!topHosts) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -51,7 +49,6 @@ const TophostsCard = () => {
     );
   }
 
-  // 3. Render dei Dati
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {topHosts.map((host, index) => (

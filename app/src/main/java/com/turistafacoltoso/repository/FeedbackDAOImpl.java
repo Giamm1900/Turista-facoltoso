@@ -16,12 +16,12 @@ import com.turistafacoltoso.util.DataBaseConnection;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FeedbackDAOImpl implements FeedbackDAO {
-    private static final String INSERT_QUERY = "INSERT INTO feedback (id_host, titolo, testo, punteggio, prenotazione_id) VALUES (?, ?, ?, ?, ?) RETURNING id";
+    private static final String INSERT_QUERY = "INSERT INTO feedback (id_utente,id_abitazione, titolo, testo, punteggio, prenotazione_id) VALUES (?,?, ?, ?, ?, ?) RETURNING id";
     private static final String SELECT_ALL = "SELECT * FROM feedback";
     private static final String SELECT_BY_ID = "SELECT * FROM feedback WHERE id = ?";
-    private static final String SELECT_BY_HOST = "SELECT * FROM feedback WHERE id_host = ?";
+    private static final String SELECT_BY_ABITAZIONE = "SELECT * FROM feedback WHERE id_abitazione = ?";
     private static final String SELECT_BY_PUNTEGGIO = "SELECT * FROM feedback WHERE punteggio = ?";
-    private static final String UPDATE_QUERY = "UPDATE feedback SET id_host = ?, titolo = ?, testo = ?, punteggio = ?, prenotazione_id = ? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE feedback id_utente = ?,id_abitazione = ?, titolo = ?, testo = ?, punteggio = ?, prenotazione_id = ? WHERE id = ?";
     private static final String DELETE_ALL = "DELETE FROM feedback";
     private static final String DELETE_BY_ID = "DELETE FROM feedback WHERE id = ?";
 
@@ -31,11 +31,12 @@ public class FeedbackDAOImpl implements FeedbackDAO {
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(INSERT_QUERY)) {
             
-            ps.setInt(1, f.getIdHost());
-            ps.setString(2, f.getTitolo());
-            ps.setString(3, f.getTesto());
-            ps.setInt(4, f.getPunteggio());
-            ps.setInt(5, f.getPrenotazioneId());
+            ps.setInt(1, f.getIdUser());
+            ps.setInt(2, f.getIdAbitazione());
+            ps.setString(3, f.getTitolo());
+            ps.setString(4, f.getTesto());
+            ps.setInt(5, f.getPunteggio());
+            ps.setInt(6, f.getPrenotazioneId());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -82,12 +83,12 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     }
 
     @Override
-    public List<Feedback> findByIdHost(Integer idHost) {
-        log.info("Recupero feedback per Host ID: {}", idHost);
+    public List<Feedback> findByIdHost(Integer idAbitazione) {
+        log.info("Recupero feedback per abitazione id: {}", idAbitazione);
         List<Feedback> list = new ArrayList<>();
         try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SELECT_BY_HOST)) {
-            ps.setInt(1, idHost);
+             PreparedStatement ps = conn.prepareStatement(SELECT_BY_ABITAZIONE)) {
+            ps.setInt(1, idAbitazione);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(mapResultSetToFeedback(rs));
@@ -120,12 +121,13 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     public Optional<Feedback> update(Feedback f) {
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_QUERY)) {
-            ps.setInt(1, f.getIdHost());
-            ps.setString(2, f.getTitolo());
-            ps.setString(3, f.getTesto());
-            ps.setInt(4, f.getPunteggio());
-            ps.setInt(5, f.getPrenotazioneId());
-            ps.setInt(6, f.getId());
+            ps.setInt(1, f.getIdUser());
+            ps.setInt(2, f.getPrenotazioneId());
+            ps.setString(3, f.getTitolo());
+            ps.setString(4, f.getTesto());
+            ps.setInt(5, f.getPunteggio());
+            ps.setInt(6, f.getPrenotazioneId());
+            ps.setInt(7, f.getId());
 
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0 ? Optional.of(f) : Optional.empty();
@@ -161,7 +163,8 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     private Feedback mapResultSetToFeedback(ResultSet rs) throws SQLException {
         Feedback f = new Feedback();
         f.setId(rs.getInt("id"));
-        f.setIdHost(rs.getInt("id_host"));
+        f.setIdUser(rs.getInt("id_user"));
+        f.setIdAbitazione(rs.getInt("id_abitazione"));
         f.setTitolo(rs.getString("titolo"));
         f.setTesto(rs.getString("testo"));
         f.setPunteggio(rs.getInt("punteggio"));

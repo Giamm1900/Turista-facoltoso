@@ -13,12 +13,14 @@ public class Feedback {
     private String testo;
     private int punteggio;
     private int prenotazioneId;
-    private int idHost;
-    public Feedback(String titolo, String testo, int punteggio, int prenotazioneId, int idHost) {
+    private int idUser;
+    private int idAbitazione;
+    public Feedback(String titolo, String testo, int punteggio, int prenotazioneId, int idUser,int idAbitazione) {
         this.titolo = titolo;
         this.testo = testo;
         this.punteggio = punteggio;
         this.prenotazioneId = prenotazioneId;
-        this.idHost = idHost;
+        this.idUser = idUser;
+        this.idAbitazione = idAbitazione;
     }
 }

@@ -58,7 +58,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
     },
   });
 
-  // Reset dei campi quando il dialog si apre o cambiano i dati
   useEffect(() => {
     if (open) {
       reset({

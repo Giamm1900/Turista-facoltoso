@@ -97,7 +97,6 @@ const HostForm = ({ host, onSuccess, trigger }: HostFormProps) => {
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4 py-2">
-          {/* Campo Reale per il DB */}
           <div className="space-y-2 border p-3 rounded-md bg-secondary/20">
             <Label htmlFor="idUtente" className="font-bold text-primary">ID Utente (Campo Obbligatorio)</Label>
             <Input 
@@ -109,8 +108,6 @@ const HostForm = ({ host, onSuccess, trigger }: HostFormProps) => {
             />
             {errors.idUtente && <p className="text-xs text-destructive font-medium">{errors.idUtente.message}</p>}
           </div>
-
-          {/* Campi Informativi (Sola Lettura) - Mostrati solo se l'host esiste già */}
           {isEditMode && (
             <div className="space-y-3 pt-2 border-t">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">

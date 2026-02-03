@@ -21,12 +21,12 @@ public class FeedbackController {
 
     public void registerRoutes(Javalin app) {
         // CREATE
-        app.post("/api/v1/feedback", this::createFeedback);
+        app.post("/api/v1/feedbacks", this::createFeedback);
 
         // READ
-        app.get("/api/v1/feedback", this::getAllFeedback);
-        app.get("/api/v1/feedback/{id}", this::getFeedbackById);
-        app.get("/api/v1/feedback/punteggio/{punteggio}", this::getFeedbackByPunteggio);
+        app.get("/api/v1/feedbacks", this::getAllFeedback);
+        app.get("/api/v1/feedbacks/{id}", this::getFeedbackById);
+        app.get("/api/v1/feedbacks/punteggio/{punteggio}", this::getFeedbackByPunteggio);
 
         // UPDATE
         app.put("/api/v1/feedback/{id}", this::updateFeedback);
