@@ -41,7 +41,7 @@ export interface Prenotazione {
 
 export interface Feedback {
   id: number;
-  idUtente: number;
+  idUser: number;
   idAbitazione: number;
   titolo: string;
   testo: string;

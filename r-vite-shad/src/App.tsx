@@ -6,6 +6,7 @@ import Reservation from "./components/pages/reservation-list-form";
 import Residences from "./components/pages/Residences";
 import Users from "./components/pages/Users";
 import Hosts from "./components/pages/Hosts";
+import FeedbackList from "./components/pages/FeedbackList";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="abitazioni" element={<Residences/>}/>
         <Route path="utenti" element={<Users/>}/>
         <Route path="hosts" element={<Hosts/>}/>
+        <Route path="feedbacks" element={<FeedbackList/>}/>
       </Route>
     </Routes>
   );

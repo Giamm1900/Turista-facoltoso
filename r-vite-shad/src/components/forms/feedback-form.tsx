@@ -42,7 +42,7 @@ const FeedbackForm = ({ feedback, onSuccess, trigger }: FeedbackSchemaProps) => 
   } = useForm<FeedbackSchemaValue>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      idUtente: feedback?.idUtente || 0,
+      idUtente: feedback?.idUser || 0,
       idAbitazione:feedback?.idAbitazione || 0,
       titolo: feedback?.titolo || "",
       testo: feedback?.testo || "",
@@ -53,7 +53,7 @@ const FeedbackForm = ({ feedback, onSuccess, trigger }: FeedbackSchemaProps) => 
   useEffect(() => {
     if (open) {
       reset({
-        idUtente: feedback?.idUtente || 0,
+        idUtente: feedback?.idUser || 0,
         idAbitazione:feedback?.idAbitazione || 0,
         titolo: feedback?.titolo || "",
         testo: feedback?.testo || "",

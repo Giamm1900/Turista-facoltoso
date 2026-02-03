@@ -18,14 +18,16 @@ export default function Navbar() {
                 <Link to={"/utenti"}>Users</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              
-                <Link to={"/abitazioni"}>Homes</Link>
+                <Link to={"/abitazioni"}>Residences</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
                 <Link to={"/prenotazioni"}>Reservations</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
                 <Link to={"/hosts"}>Hosts</Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <Link to={"/feedbacks"}>Feedbacks</Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

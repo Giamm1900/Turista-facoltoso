@@ -143,7 +143,6 @@ const Residences = () => {
                          <span className="text-xs font-medium">#{residence.idHost}</span>
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        {/* Componente Modifica */}
                         <ResidenceForm 
                           residence={residence} 
                           onSuccess={loadResidences} 
@@ -153,7 +152,6 @@ const Residences = () => {
                             </Button>
                           }
                         />
-                        {/* Bottone Elimina */}
                         <Button 
                           variant="ghost" 
                           size="icon" 
