@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Plus, Pencil } from "lucide-react";
 import { z } from "zod";
 
-export const userSchema = z.object({
+const userSchema = z.object({
   nomeUser: z.string().min(2, "Il nome deve contenere almeno 2 caratteri"),
   cognome: z.string().min(2, "Il cognome deve contenere almeno 2 caratteri"),
   email: z.email("Email non valida"),
