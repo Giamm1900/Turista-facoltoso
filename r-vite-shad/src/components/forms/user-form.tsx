@@ -158,6 +158,19 @@ const UserFormDialog = ({ user, onSuccess, trigger }: UserFormDialogProps) => {
                 </p>
               )}
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                {...register("email")}
+                className={errors.email ? "border-destructive" : ""}
+              />
+              {errors.email && (
+                <p className="text-xs text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="space-y-2">
