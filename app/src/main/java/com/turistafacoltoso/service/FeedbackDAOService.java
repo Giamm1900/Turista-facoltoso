@@ -22,12 +22,12 @@ public class FeedbackDAOService {
      * inserimento di un feedback
      * 
      */
-    public Feedback insertFeedback(String titolo, String testo, int punteggio, int prenotazioneId, int idHost){
+    public Feedback insertFeedback(String titolo, String testo, int punteggio, int prenotazioneId, int idUtente,int idAbitazione){
         log.info(
-            "inserimento feedback - titolo: {}, testo: {}, punteggio: {}, prenotazioneid: {}, idHost: {}"
-            ,titolo,testo,punteggio,prenotazioneId,idHost);
+            "inserimento feedback - titolo: {}, testo: {}, punteggio: {}, prenotazioneid: {}, idUtente: {}"
+            ,titolo,testo,punteggio,prenotazioneId,idUtente);
         if (punteggio < 1 || punteggio > 5) throw new IllegalArgumentException("Punteggio non valido");
-        Feedback f = new Feedback(titolo,testo,punteggio,prenotazioneId,idHost);
+        Feedback f = new Feedback(titolo,testo,punteggio,prenotazioneId,idUtente,idAbitazione);
         return feedbackDAO.create(f);
     }
 
@@ -56,13 +56,13 @@ public class FeedbackDAOService {
      * 
      *  ricerca feedback by idHost
      */
-    public List<Feedback> getFeedbackByIdHost(int idHost){
-        log.info("ricerca feedback by idHost");
-        if (idHost <= 0) {
+    public List<Feedback> getFeedbackByIdUtente(int idUtente){
+        log.info("ricerca feedback by idUtente");
+        if (idUtente <= 0) {
             log.error("l'id non può essere 0 o null");
-            throw new FeedbackNotFoundException("feedback non trovato: "+idHost);
+            throw new FeedbackNotFoundException("feedback non trovato: "+idUtente);
         }
-        return feedbackDAO.findByIdHost(idHost);
+        return feedbackDAO.findByIdHost(idUtente);
     }
 
     /**

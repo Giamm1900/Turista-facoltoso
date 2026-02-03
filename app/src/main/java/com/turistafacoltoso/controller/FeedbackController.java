@@ -26,6 +26,7 @@ public class FeedbackController {
         // READ
         app.get("/api/v1/feedbacks", this::getAllFeedback);
         app.get("/api/v1/feedbacks/{id}", this::getFeedbackById);
+        app.get("/api/v1/feedbacks/users/{id}", this::getFeedbackByIdUtente);
         app.get("/api/v1/feedbacks/punteggio/{punteggio}", this::getFeedbackByPunteggio);
 
         // UPDATE
@@ -52,7 +53,9 @@ public class FeedbackController {
                     f.getTesto(),
                     f.getPunteggio(),
                     f.getPrenotazioneId(),
-                    f.getIdHost());
+                    f.getIdUser(),
+                    f.getIdAbitazione()
+                );
 
             ctx.status(HttpStatus.CREATED);
             ctx.json(created);
@@ -87,11 +90,11 @@ public class FeedbackController {
         ctx.json(feedbackDAOService.getFeedbackByPunteggio(punteggio));
     }
 
-    // private void getFeedbackByIdHost(Context ctx){
-    // int idHost = Integer.parseInt(ctx.pathParam("idHost"));
-    // log.info("GET api/v1/feedback/host/{id} - ricerca per punteggio", idHost);
-    // ctx.json(feedbackDAOService.getFeedbackByIdHost(idHost));
-    // }
+    private void getFeedbackByIdUtente(Context ctx){
+    int idUtente = Integer.parseInt(ctx.pathParam("idUtente"));
+    log.info("GET api/v1/feedback/users/{id} - ricerca per idUtente", idUtente);
+    ctx.json(feedbackDAOService.getFeedbackByIdUtente(idUtente));
+    }
 
     private void updateFeedback(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
