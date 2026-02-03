@@ -94,7 +94,7 @@ const Users = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[80px]">ID</TableHead>
+                    <TableHead className="w-20">ID</TableHead>
                     <TableHead>Nominativo</TableHead>
                     <TableHead className="hidden md:table-cell">Email</TableHead>
                     <TableHead className="hidden lg:table-cell">Indirizzo</TableHead>
