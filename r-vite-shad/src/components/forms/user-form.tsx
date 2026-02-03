@@ -21,7 +21,7 @@ import { z } from "zod";
 export const userSchema = z.object({
   nomeUser: z.string().min(2, "Il nome deve contenere almeno 2 caratteri"),
   cognome: z.string().min(2, "Il cognome deve contenere almeno 2 caratteri"),
-  email: z.string().email("Email non valida"),
+  email: z.email("Email non valida"),
   indirizzoUser: z
     .string()
     .min(5, "L'indirizzo deve contenere almeno 5 caratteri"),
