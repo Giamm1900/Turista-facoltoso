@@ -21,7 +21,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     private static final String SELECT_BY_ID = "SELECT * FROM feedback WHERE id = ?";
     private static final String SELECT_BY_ABITAZIONE = "SELECT * FROM feedback WHERE id_abitazione = ?";
     private static final String SELECT_BY_PUNTEGGIO = "SELECT * FROM feedback WHERE punteggio = ?";
-    private static final String UPDATE_QUERY = "UPDATE feedback id_utente = ?,id_abitazione = ?, titolo = ?, testo = ?, punteggio = ?, prenotazione_id = ? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE feedback SET id_utente = ?, id_abitazione = ?, titolo = ?, testo = ?, punteggio = ?, prenotazione_id = ? WHERE id = ?";
     private static final String DELETE_ALL = "DELETE FROM feedback";
     private static final String DELETE_BY_ID = "DELETE FROM feedback WHERE id = ?";
 
@@ -122,7 +122,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_QUERY)) {
             ps.setInt(1, f.getIdUser());
-            ps.setInt(2, f.getPrenotazioneId());
+            ps.setInt(2, f.getIdAbitazione());
             ps.setString(3, f.getTitolo());
             ps.setString(4, f.getTesto());
             ps.setInt(5, f.getPunteggio());
@@ -163,7 +163,7 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     private Feedback mapResultSetToFeedback(ResultSet rs) throws SQLException {
         Feedback f = new Feedback();
         f.setId(rs.getInt("id"));
-        f.setIdUser(rs.getInt("id_user"));
+        f.setIdUser(rs.getInt("id_utente"));
         f.setIdAbitazione(rs.getInt("id_abitazione"));
         f.setTitolo(rs.getString("titolo"));
         f.setTesto(rs.getString("testo"));

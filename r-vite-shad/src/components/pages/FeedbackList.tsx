@@ -31,7 +31,10 @@ const FeedbackList = ({ feedbacks }: FeedbackListProps) => {
             </div>
             <p className="text-sm italic">"{f.testo}"</p>
             <p className="text-[10px] mt-2 text-muted-foreground uppercase tracking-wider">
-              Utente ID: {f.idHost}
+              Utente ID: {f.idUtente}
+            </p>
+            <p className="text-[10px] mt-2 text-muted-foreground uppercase tracking-wider">
+              Abitazione ID: {f.idAbitazione}
             </p>
           </CardContent>
         </Card>

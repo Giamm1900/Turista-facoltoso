@@ -30,10 +30,10 @@ public class FeedbackController {
         app.get("/api/v1/feedbacks/punteggio/{punteggio}", this::getFeedbackByPunteggio);
 
         // UPDATE
-        app.put("/api/v1/feedback/{id}", this::updateFeedback);
+        app.put("/api/v1/feedbacks/{id}", this::updateFeedback);
 
         // DELETE
-        app.delete("/api/v1/feedback/{}", this::deleteFeedbackById);
+        app.delete("/api/v1/feedbacks/{id}", this::deleteFeedbackById);
     }
 
     private void createFeedback(Context ctx) {
@@ -86,35 +86,36 @@ public class FeedbackController {
 
     private void getFeedbackByPunteggio(Context ctx) {
         int punteggio = Integer.parseInt(ctx.pathParam("punteggio"));
-        log.info("GET api/v1/feedback/punteggio/{punteggio} - ricerca per punteggio", punteggio);
+        log.info("GET api/v1/feedbacks/punteggio/{punteggio} - ricerca per punteggio", punteggio);
         ctx.json(feedbackDAOService.getFeedbackByPunteggio(punteggio));
     }
 
     private void getFeedbackByIdUtente(Context ctx){
     int idUtente = Integer.parseInt(ctx.pathParam("idUtente"));
-    log.info("GET api/v1/feedback/users/{id} - ricerca per idUtente", idUtente);
+    log.info("GET api/v1/feedbacks/users/{id} - ricerca per idUtente", idUtente);
     ctx.json(feedbackDAOService.getFeedbackByIdUtente(idUtente));
     }
 
     private void updateFeedback(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         Feedback f = ctx.bodyAsClass(Feedback.class);
-        f.setId(id); // Assicuriamo che l'ID sia quello del path
+        f.setId(id);
 
-        log.info("PUT /api/v1/feedback/{} - Aggiornamento", id);
+        log.info("PUT /api/v1/feedbacks/{id} - Aggiornamento", id);
 
         Optional<Feedback> updated = feedbackDAOService.updateFeedback(f);
         if (updated.isPresent()) {
             ctx.json(updated.get());
+            log.info("feedback updated");
         } else {
             ctx.status(HttpStatus.NOT_FOUND);
-            throw new FeedbackNotFoundException("Impossibile aggiornare: abitazione non esistente");
+            throw new FeedbackNotFoundException("Impossibile aggiornare: Feedback non Trovato");
         }
     }
 
     private void deleteFeedbackById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        log.info("DELETE /api/v1/feedback/{} - Cancellazione", id);
+        log.info("DELETE /api/v1/feedbacks/{id} - Cancellazione", id);
 
         if (feedbackDAOService.deleteFeedbackById(id)) {
             ctx.status(HttpStatus.OK);

@@ -11,7 +11,8 @@ import { Loader2, Pencil, Plus } from "lucide-react";
 import { Label } from "../ui/label";
 
 const feedbackSchema = z.object({
-  idHost: z.number().min(1, "id host richiesto"),
+  idUtente: z.number().min(1, "id utente richiesto"),
+  idAbitazione:z.number().min(1,"id abitazione richiesto"),
   titolo: z.string().min(2, "titolo richiesto").max(50),
   testo: z.string().min(2).max(500, "testo richiesto"),
   punteggio: z.number().min(1).max(5, "punteggio obbligatorio"),
@@ -41,7 +42,8 @@ const FeedbackForm = ({ feedback, onSuccess, trigger }: FeedbackSchemaProps) => 
   } = useForm<FeedbackSchemaValue>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      idHost: feedback?.idHost || 0,
+      idUtente: feedback?.idUtente || 0,
+      idAbitazione:feedback?.idAbitazione || 0,
       titolo: feedback?.titolo || "",
       testo: feedback?.testo || "",
       punteggio: feedback?.punteggio || 1,
@@ -51,7 +53,8 @@ const FeedbackForm = ({ feedback, onSuccess, trigger }: FeedbackSchemaProps) => 
   useEffect(() => {
     if (open) {
       reset({
-        idHost: feedback?.idHost || 0,
+        idUtente: feedback?.idUtente || 0,
+        idAbitazione:feedback?.idAbitazione || 0,
         titolo: feedback?.titolo || "",
         testo: feedback?.testo || "",
         punteggio: feedback?.punteggio || 1,
@@ -105,9 +108,15 @@ const FeedbackForm = ({ feedback, onSuccess, trigger }: FeedbackSchemaProps) => 
           <div className="grid grid-cols-2 gap-4">
 
             <div className="col-span-2 space-y-1">
-              <Label>Id Host</Label>
-              <Input type="number"{...register("idHost",{valueAsNumber:true})} />
-              {errors.idHost && <p className="text-xs text-destructive">{errors.idHost.message}</p>}
+              <Label>Id Utente</Label>
+              <Input type="number"{...register("idUtente",{valueAsNumber:true})} />
+              {errors.idUtente && <p className="text-xs text-destructive">{errors.idUtente.message}</p>}
+            </div>
+
+            <div className="col-span-2 space-y-1">
+              <Label>Id Abitazione</Label>
+              <Input type="number"{...register("idAbitazione",{valueAsNumber:true})} />
+              {errors.idAbitazione && <p className="text-xs text-destructive">{errors.idAbitazione.message}</p>}
             </div>
 
 
