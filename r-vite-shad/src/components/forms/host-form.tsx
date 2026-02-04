@@ -168,7 +168,6 @@ const HostForm = ({ host, onSuccess, trigger }: HostFormProps) => {
                    <Label className="text-xs uppercase text-muted-foreground">Email</Label>
                    <p className="text-sm font-medium">{host.email}</p>
                  </div>
-                 {/* ... altri campi come nel tuo codice originale ... */}
                </div>
             </div>
           )}
