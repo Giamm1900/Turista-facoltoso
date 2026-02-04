@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Star } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AllSuperHost = () => {
   const [superHosts, setSuperHost] = useState<{ name: string; total: number }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -12,17 +14,15 @@ const AllSuperHost = () => {
   useEffect(() => {
     const loadSuperUser = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/superHosts`);
+        const res = await fetch(`${API_URL}/api/v1/superHosts`);
         if (!res.ok) {
           throw new Error("errore recupero superhost");
-          
         }
         const data = await res.json();
         const transformedData = Object.entries(data).map(([key, value]) => ({
           name: key,
           total: value as number,
         }));
-
         setSuperHost(transformedData);
       } catch (error) {
         console.error("Errore:", error);
@@ -36,7 +36,7 @@ const AllSuperHost = () => {
   if (loading) return <Skeleton className="h-40 w-full" />;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
       {superHosts.map((host) => (
         <Card key={host.name} className="border-t-4 border-t-yellow-500">
           <CardHeader className="flex flex-row items-center gap-4">

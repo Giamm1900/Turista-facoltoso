@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "react-router";
+import miologo from "@/assets/asa5.jpg"; 
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,13 @@ export default function Navbar() {
   return (
     <nav className="w-full border-b bg-background">
       <div className="mx-auto flex h-16 items-center justify-between px-4">
-        <Link to={"/"} className="text-lg font-semibold">Back-Office</Link>
+        <div className="p-4">
+        <Link to={"/"} className="text-lg font-semibold"><img 
+        src={miologo} 
+        alt="Logo Turista" 
+        className="h-20 w-20 rounded-full object-cover " 
+      /></Link>
+    </div>
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-6">
             <NavigationMenuItem>
