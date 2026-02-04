@@ -11,13 +11,12 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { Loader2, CalendarPlus, CalendarDays } from "lucide-react";
+import { Loader2, CalendarPlus} from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import type { Abitazione, Prenotazione, Utente } from "@/types/types";
-import { Badge } from "../ui/badge";
 
 const prenotazioneSchema = z
   .object({
