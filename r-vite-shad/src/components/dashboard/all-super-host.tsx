@@ -1,27 +1,31 @@
-import type { SuperHost } from "@/types/types";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Star, ShieldCheck } from "lucide-react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { Star } from "lucide-react";
 
 const AllSuperHost = () => {
-  const [superHosts, setSuperHost] = useState<SuperHost[] | null>(null);
+  const [superHosts, setSuperHost] = useState<{ name: string; total: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadSuperUser = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/v1/superHosts`);
-        if (!res.ok) throw new Error("Errore nel recupero dei super host");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/superHosts`);
+        if (!res.ok) {
+          throw new Error("errore recupero superhost");
+          
+        }
         const data = await res.json();
-        setSuperHost(data);
+        const transformedData = Object.entries(data).map(([key, value]) => ({
+          name: key,
+          total: value as number,
+        }));
+
+        setSuperHost(transformedData);
       } catch (error) {
-        console.error("Errore nella fetch", error);
-        setSuperHost([]);
+        console.error("Errore:", error);
       } finally {
         setLoading(false);
       }
@@ -29,79 +33,33 @@ const AllSuperHost = () => {
     loadSuperUser();
   }, []);
 
-  const LoadingSkeleton = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {[...Array(4)].map((_, i) => (
-        <Card key={i} className="overflow-hidden">
+  if (loading) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {superHosts.map((host) => (
+        <Card key={host.name} className="border-t-4 border-t-yellow-500">
           <CardHeader className="flex flex-row items-center gap-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-3 w-16" />
+            <Avatar>
+              <AvatarFallback className="bg-yellow-100 text-yellow-700">
+                {host.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-bold">{host.name}</p>
+              <Badge variant="outline" className="text-[10px]">PREMIUM HOST</Badge>
             </div>
           </CardHeader>
-          <CardContent>
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-2/3" />
+          <CardContent className="flex items-center justify-between">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span>Elite Level</span>
+            </div>
+            <span className="text-lg font-black">{host.total} <span className="text-xs font-normal text-muted-foreground">trip</span></span>
           </CardContent>
         </Card>
       ))}
     </div>
   );
-
-  if (loading) return <LoadingSkeleton />;
-
-  if (!superHosts || superHosts.length === 0) {
-    return (
-      <div className="text-center py-10 text-muted-foreground">
-        Nessun SuperHost disponibile al momento.
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <ShieldCheck className="text-primary h-6 w-6" />
-        <h2 className="text-2xl font-bold tracking-tight">I nostri SuperHost</h2>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {superHosts.map((host) => (
-          <Card key={host.hostId} className="transition-all hover:shadow-md border-muted">
-            <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              {/* <Avatar className="h-12 w-12 border-2 border-primary/20">
-                Supponendo che il tipo SuperHost abbia avatarUrl e nome
-                <AvatarImage src={host.} alt={host.nome} /> 
-                <AvatarFallback className="bg-primary/10 text-primary">
-                  {host.nome?.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar> */}
-              <div className="flex flex-col">
-                {/* <span className="font-semibold leading-none">{host.nome}</span> */}
-                <span className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">
-                  Host Professionista
-                </span>
-              </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100 border-none flex gap-1 items-center">
-                  <Star className="h-3 w-3 fill-current" />
-                  SuperHost
-                </Badge>
-                {/* Esempio di dato aggiuntivo se presente nel DTO */}
-                <span className="text-xs text-muted-foreground">
-                  {host.totalePrenotazioni || 2} anni di attività
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
 };
-
 export default AllSuperHost;

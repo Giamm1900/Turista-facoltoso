@@ -79,15 +79,17 @@ CREATE TABLE public.feedback (
         FOREIGN KEY (id_abitazione) REFERENCES abitazione(id) 
 );
 
-
 CREATE VIEW super_host AS
 SELECT 
     h.id AS host_id,
+    u.nome_user,
+    u.cognome,
     COUNT(p.id) AS totale_prenotazioni
 FROM host h
+JOIN utente u ON h.id_utente = u.id
 JOIN abitazione a ON a.id_host = h.id
 JOIN prenotazione p ON p.abitazione_id = a.id
-GROUP BY h.id
+GROUP BY h.id, u.nome_user, u.cognome
 HAVING COUNT(p.id) >= 100;
 
 

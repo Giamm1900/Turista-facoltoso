@@ -51,7 +51,7 @@ export interface Feedback {
 }
 
 export interface SuperHost {
-  hostId: number;
+  nome_user: number;
   totalePrenotazioni: number;
 }
 
