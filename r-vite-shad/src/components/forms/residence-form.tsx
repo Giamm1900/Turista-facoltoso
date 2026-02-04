@@ -1,6 +1,6 @@
-import type { Abitazione } from "@/types/types";
+import type { Abitazione, Host } from "@/types/types";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import {
   Dialog,
@@ -17,6 +17,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Alert, AlertDescription } from "../ui/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const residenceSchema = z.object({
   nomeAbitazione: z.string().min(2, "Nome troppo breve"),
@@ -42,6 +43,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [hosts,setHosts] = useState<Host[] | null>([]);
   const isEditMode = !!residence;
 
   const {
@@ -49,6 +51,7 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    control,
   } = useForm<ResidenceFormValues>({
     resolver: zodResolver(residenceSchema),
     defaultValues: {
@@ -62,6 +65,20 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
       idHost: residence?.idHost || 1,
     },
   });
+
+  useEffect(()=>{
+    const loadHosts = async () => {
+      const res = await fetch(`${API_URL}/api/v1/hosts`);
+      if (!res.ok) {
+        throw new Error("errore recupero hosts");
+      }
+      const data = await res.json();
+      setHosts(data);
+    }
+    if (open) {
+      loadHosts()
+    }
+  },[open])
 
   useEffect(() => {
     if (open) {
@@ -168,11 +185,21 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
             </div>
 
             
-            <div className="space-y-1">
-              <Label>ID Host</Label>
-              <Input type="number" {...register("idHost",{valueAsNumber:true})} />
-              {errors.idHost && <p className="text-xs text-destructive">{errors.idHost.message}</p>}
-            </div>
+            <div className="space-y-2">
+            <Label>Host</Label>
+            <Controller
+              control={control}
+              name="idHost"
+              render={({ field }) => (
+                <Select onValueChange={(val) => field.onChange(Number(val))} value={field.value?.toString()}>
+                  <SelectTrigger><SelectValue placeholder="Seleziona Host" /></SelectTrigger>
+                  <SelectContent>
+                    {hosts?.map(u => <SelectItem key={u.id} value={u.id.toString()}>{u.nomeUser} {u.cognome}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
 
             
             <div className="space-y-1">

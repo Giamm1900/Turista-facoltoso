@@ -160,7 +160,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          {/* SELECT UTENTE */}
           <div className="space-y-2">
             <Label>Utente</Label>
             <Controller
@@ -176,8 +175,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
               )}
             />
           </div>
-
-          {/* SELECT ABITAZIONE */}
           <div className="space-y-2">
             <Label>Abitazione</Label>
             <Controller
@@ -194,8 +191,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
             />
           </div>
 
-
-          {/* DATE */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Inizio</Label>
@@ -207,7 +202,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
             </div>
           </div>
 
-          {/* AVVISO DISPONIBILITÀ REAL-TIME */}
           {startDate && endDate && selectedAbitazione && (
             <div className={`p-2 rounded text-xs font-bold ${isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
               {isAvailable ? "✓ Date disponibili" : "✗ Abitazione occupata in questo periodo"}
