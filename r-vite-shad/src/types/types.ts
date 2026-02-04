@@ -54,3 +54,4 @@ export interface SuperHost {
   hostId: number;
   totalePrenotazioni: number;
 }
+
