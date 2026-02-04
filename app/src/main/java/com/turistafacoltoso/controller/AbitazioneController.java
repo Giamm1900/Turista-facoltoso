@@ -1,5 +1,6 @@
 package com.turistafacoltoso.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class AbitazioneController {
         app.get("/api/v1/abitazioni/search/disponibilita", this::getAbitazioniDisponibili);
         app.get("/api/v1/abitazioni/hosts/{id}", this::getAbitazioniByHostId);
         app.get("/api/v1/abitazioni/stats/mostPopular",this::getMostPopularAbitazione);
+        app.get("/api/v1/abitazioni/postiletto/media",this::getMediaPostiLettoAbitazione);
 
         // UPDATE
         app.put("/api/v1/abitazioni/{id}", this::updateAbitazione);
@@ -114,6 +116,12 @@ public class AbitazioneController {
             ctx.status(HttpStatus.NOT_FOUND);
             ctx.json(buildErrorResponse("Abitazione non trovata"));
         }
+    }
+
+    private void getMediaPostiLettoAbitazione(Context ctx){
+        log.info("GET /api/v1/abitazioni/postiletto/media");
+        BigDecimal result = abitazioneService.getMediaPostiLettoAbitazione();
+        ctx.json(result, getClass());
     }
 
     // ==================== UPDATE ====================

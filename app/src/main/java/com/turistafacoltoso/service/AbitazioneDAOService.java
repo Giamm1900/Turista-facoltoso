@@ -88,6 +88,10 @@ public class AbitazioneDAOService {
         return abitazioneDAO.findByHostId(idHost);
     }
 
+    public BigDecimal getMediaPostiLettoAbitazione(){
+        return abitazioneDAO.getMediaPostiLetto();
+    }
+
     /**
      * Aggiorna i dati di un'abitazione esistente.
      */

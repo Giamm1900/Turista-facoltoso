@@ -22,7 +22,6 @@ const MostPopularAbitazione = () => {
         if (!res.ok) throw new Error("Errore nel recupero dati");
         
         const result = await res.json();
-        // Gestiamo sia il caso array che oggetto singolo dal backend
         const item = Array.isArray(result) ? result[0] : result;
         
         setData(item);

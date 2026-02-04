@@ -48,6 +48,7 @@ public interface AbitazioneDAO {
 
     Optional<Abitazione> findMostPopularLastMonth();
 
+    BigDecimal getMediaPostiLetto();
 
     // UPDATE
 
@@ -61,5 +62,4 @@ public interface AbitazioneDAO {
 
     boolean deleteByName(String name);
 
-    BigDecimal getMediaPostiLetto();
 }
