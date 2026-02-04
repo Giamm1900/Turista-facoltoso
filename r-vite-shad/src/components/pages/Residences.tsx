@@ -17,16 +17,18 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { Trash, Home, MapPin, Pencil } from "lucide-react";
+import { Trash, Home, MapPin, Pencil, BotIcon } from "lucide-react";
 import ResidenceForm from "../forms/residence-form";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Residences = () => {
   const [residences, setResidences] = useState<Abitazione[] | null>(null);
+  const [mediaPosti,setMediaPosti] = useState<number>(0);
 
   useEffect(() => {
     loadResidences();
+    loadMediaPosti();
   }, []);
 
   const loadResidences = async () => {
@@ -40,6 +42,17 @@ const Residences = () => {
     }
   };
 
+  const loadMediaPosti = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/v1/abitazioni/postiletto/media`);
+      if (!res.ok) throw new Error("Errore recupero media posti letto");
+      const data = await res.json();
+      setMediaPosti(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const deleteResidence = async (id: number) => {
     if (!confirm("Sei sicuro di voler eliminare questa abitazione?")) return;
     
@@ -49,7 +62,6 @@ const Residences = () => {
       });
       if (!res.ok) throw new Error("Errore durante l'eliminazione");
       
-      // Aggiorna lo stato locale senza ricaricare tutto
       setResidences((prev) => prev ? prev.filter(r => r.id !== id) : null);
     } catch (error) {
       console.error(error);
@@ -92,6 +104,7 @@ const Residences = () => {
           <CardTitle className="flex items-center gap-2">
             <Home className="h-5 w-5" />
             Elenco Abitazioni
+            <BotIcon className=""/>media posti letto : {mediaPosti}
           </CardTitle>
           <CardDescription>
             Totale strutture registrate: {residences.length}
