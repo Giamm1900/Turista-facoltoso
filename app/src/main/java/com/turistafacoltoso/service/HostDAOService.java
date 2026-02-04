@@ -51,6 +51,10 @@ public class HostDAOService {
         return hostDAO.findTopHostsLastMonth();
     }
 
+    public Map<String,Integer> findAllSuperHosts(){
+        return hostDAO.findAllSuperHosts();
+    }
+
     // ==================== UPDATE ====================
 
     public Host updateHost(Host host) {

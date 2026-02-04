@@ -159,7 +159,6 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
             throw new RuntimeException("Errore nella ricerca per ID utente", e);
         }
 
-        // 2. Restituisci la lista (vuota o piena), mai null
         return lp;
     }
 

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import Navbar from "./navbar";
+import Footer from "./footer";
 
 
 export const Layout = () => {
@@ -9,6 +10,7 @@ export const Layout = () => {
       <main className="flex-1 space-y-4 p-4">
         <Outlet />
       </main>
+      <Footer/>
     </div>
   );
 };

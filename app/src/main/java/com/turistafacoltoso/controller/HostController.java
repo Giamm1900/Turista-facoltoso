@@ -32,6 +32,7 @@ public class HostController {
         app.get("/api/v1/hosts", this::getAllHosts);
         app.get("/api/v1/hosts/{id}", this::getHostById);
         app.get("/api/v1/top-hosts",this::getTopHosts);
+        app.get("/api/v1/superHosts",this::getSuperHost);
 
         // UPDATE
         app.put("/api/v1/hosts/{id}", this::updateHost);
@@ -92,6 +93,16 @@ public class HostController {
         Map<String,Integer> hosts = hostService.findTopHostsLastMonthS();
         if (hosts.isEmpty()) {
             log.warn("nessun host trovato");
+        }
+        ctx.status(HttpStatus.OK);
+        ctx.json(hosts);
+    }
+
+    private void getSuperHost(Context ctx){
+        log.info("GET /api/v1/hosts/superHosts");
+        Map<String,Integer> hosts = hostService.findAllSuperHosts();
+        if (hosts.isEmpty()) {
+            log.warn("nessun super host trovato");
         }
         ctx.status(HttpStatus.OK);
         ctx.json(hosts);

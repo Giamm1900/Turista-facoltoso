@@ -21,7 +21,7 @@ const TophostsCard = () => {
         const hostsArray: TopHostsValue[] = Object.entries(data)
           .map(([nome, numero]) => ({ nome, numero: numero as number }))
           .sort((a, b) => b.numero - a.numero)
-          .slice(0, 5); // Prendi solo i top 5
+          .slice(0, 5); 
 
         console.log("Top hosts:", hostsArray);
         setTopHost(hostsArray);
