@@ -32,6 +32,7 @@ public class AbitazioneController {
         app.get("/api/v1/abitazioni/locali/{n}", this::getAbitazioniByLocali);
         app.get("/api/v1/abitazioni/search/disponibilita", this::getAbitazioniDisponibili);
         app.get("/api/v1/abitazioni/hosts/{id}", this::getAbitazioniByHostId);
+        app.get("/api/v1/abitazioni/stats/mostPopular",this::getMostPopularAbitazione);
 
         // UPDATE
         app.put("/api/v1/abitazioni/{id}", this::updateAbitazione);
@@ -102,6 +103,17 @@ public class AbitazioneController {
         
         log.info("GET /api/v1/abitazioni/search/disponibilita - Range: {} / {}", inizio, fine);
         ctx.json(abitazioneService.getAbitazioniDisponibili(inizio, fine));
+    }
+
+    private void getMostPopularAbitazione(Context ctx){
+        log.info("controller: GET api/v1/abitazioni/most-popular");
+        Optional<Abitazione> a = abitazioneService.getMostPopularAbitazione();
+        if (a.isPresent()) {
+            ctx.json(a.get());
+        }else{
+            ctx.status(HttpStatus.NOT_FOUND);
+            ctx.json(buildErrorResponse("Abitazione non trovata"));
+        }
     }
 
     // ==================== UPDATE ====================

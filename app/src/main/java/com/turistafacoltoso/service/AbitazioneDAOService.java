@@ -59,6 +59,11 @@ public class AbitazioneDAOService {
         return abitazioneDAO.findById(id);
     }
 
+    public Optional<Abitazione> getMostPopularAbitazione(){
+        log.info("Service: ricerca abitazione più popoloare dell'ultimo mese");
+        return abitazioneDAO.findMostPopularLastMonth();
+    }
+
     /**
      * Ricerca abitazioni per numero di locali.
      */
