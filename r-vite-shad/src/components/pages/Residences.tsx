@@ -17,8 +17,9 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { Trash, Home, MapPin, Pencil, BotIcon } from "lucide-react";
+import { Trash, Home, MapPin, Pencil, BotIcon, ChartColumn } from "lucide-react";
 import ResidenceForm from "../forms/residence-form";
+import { Badge } from "../ui/badge";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -104,13 +105,13 @@ const Residences = () => {
           <CardTitle className="flex items-center gap-2">
             <Home className="h-5 w-5" />
             Elenco Abitazioni
-            <BotIcon className=""/>media posti letto : {mediaPosti}
           </CardTitle>
           <CardDescription>
             Totale strutture registrate: {residences.length}
           </CardDescription>
         </CardHeader>
         <CardContent>
+            <ChartColumn />media posti letto : {mediaPosti}
           {residences.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
               Nessuna abitazione trovata. Inizia creandone una nuova.
@@ -149,11 +150,13 @@ const Residences = () => {
                       </TableCell>
                       <TableCell>
                         <span className="text-xs bg-secondary px-2 py-1 rounded-full">
-                          L: {residence.nlocali} / P: {residence.npostiLetto}
+                          NLocali: {residence.nlocali} / PostiLetto: {residence.npostiLetto}
                         </span>
                       </TableCell>
                       <TableCell>
-                         <span className="text-xs font-medium">#{residence.idHost}</span>
+                        <span className="text-xs bg-green-200 px-2 py-1 rounded-full">
+                          {residence.idHost}
+                        </span>
                       </TableCell>
                       <TableCell className="text-right space-x-2">
                         <ResidenceForm 
@@ -168,7 +171,7 @@ const Residences = () => {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
                           onClick={() => deleteResidence(residence.id)}
                         >
                           <Trash className="h-4 w-4" />

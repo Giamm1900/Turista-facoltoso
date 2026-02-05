@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router";
 import "./index.css";
 import {Layout} from "./components/layout/layout";
 import Homepage from "./components/pages/homepage";
-import Reservation from "./components/pages/reservation-list-form";
+import Reservation from "./components/pages/Reservation";
 import Residences from "./components/pages/Residences";
 import Users from "./components/pages/Users";
 import Hosts from "./components/pages/Hosts";

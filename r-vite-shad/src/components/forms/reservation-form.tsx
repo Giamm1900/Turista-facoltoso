@@ -90,7 +90,6 @@ const PrenotazioneForm = ({ prenotazione, onSuccess, trigger }: PrenotazioneForm
     }
   }, [open]);
 
-  // FUNZIONE DI CONTROLLO DISPONIBILITÀ
   const checkAvailability = () => {
     if (!selectedAbitazione || !startDate || !endDate) return true;
 

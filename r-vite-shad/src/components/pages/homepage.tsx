@@ -65,8 +65,6 @@ const Homepage = () => {
           </div>
         </section>
 
-        
-
       </main>
     </div>
   );

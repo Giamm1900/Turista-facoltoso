@@ -119,7 +119,7 @@ const Hosts = () => {
                       <TableCell>
                         <div className="flex flex-col">
                           <span className="font-medium">{host.nomeUser} {host.cognome}</span>
-                          <span className="text-xs text-muted-foreground italic">UID: #{host.idUtente}</span>
+                          <span className="text-xs text-muted-foreground italic">Utente ID: {host.idUtente}</span>
                         </div>
                       </TableCell>
                       <TableCell>{host.email}</TableCell>
@@ -144,7 +144,7 @@ const Hosts = () => {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
                           onClick={() => deleteHost(host.id)}
                         >
                           <Trash className="h-4 w-4" />

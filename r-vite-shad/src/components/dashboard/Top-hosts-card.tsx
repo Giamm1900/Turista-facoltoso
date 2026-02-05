@@ -62,7 +62,7 @@ const TophostsCard = () => {
           </CardHeader>
           <CardContent className="flex flex-col gap-1">
             <Avatar>
-              <AvatarFallback className="bg-blue-200">
+              <AvatarFallback className=" bg-green-200">
                 {host.nome.charAt(0)}
               </AvatarFallback>
             </Avatar>
