@@ -18,7 +18,7 @@ import {
 } from "../ui/table";
 import { Trash, Users, Info } from "lucide-react";
 import { Button } from "../ui/button";
-import HostForm from "../forms/host-form"; // Assicurati che il percorso sia corretto
+import HostForm from "../forms/host-form";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -72,7 +72,6 @@ const Hosts = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header con Titolo e Bottone Aggiungi */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Gestione Host</h2>
@@ -115,7 +114,7 @@ const Hosts = () => {
                   {hosts.map((host) => (
                     <TableRow key={host.id}>
                       <TableCell className="font-mono text-xs text-muted-foreground">
-                        #{host.id}
+                        {host.id}
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
@@ -133,7 +132,6 @@ const Hosts = () => {
                           : "N/A"}
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        {/* Info/Edit Button */}
                         <HostForm 
                           host={host} 
                           onSuccess={loadHosts} 
@@ -143,7 +141,6 @@ const Hosts = () => {
                             </Button>
                           } 
                         />
-                        {/* Delete Button */}
                         <Button 
                           variant="ghost" 
                           size="icon" 

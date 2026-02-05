@@ -16,7 +16,6 @@ const ResidencesByHostId = () => {
                 return;
             }
             const data = await res.json();
-            console.log("Dati ricevuti:", data);
             setResidences(data);
         } catch (error) {
             console.error("Errore nel caricamento:", error);

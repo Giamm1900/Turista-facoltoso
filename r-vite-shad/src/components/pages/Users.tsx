@@ -82,7 +82,6 @@ const Users = () => {
             <CardTitle>Gestione Utenti</CardTitle>
             <CardDescription>Totale registrati: {users.length}</CardDescription>
           </div>
-          {/* ✅ Bottone per Creazione */}
           <UserFormDialog onSuccess={loadUsers} />
         </CardHeader>
 
@@ -104,7 +103,7 @@ const Users = () => {
                 <TableBody>
                   {users.map((u) => (
                     <TableRow key={u.id}>
-                      <TableCell className="font-mono text-xs text-muted-foreground">#{u.id}</TableCell>
+                      <TableCell className="font-mono text-xs text-muted-foreground">{u.id}</TableCell>
                       <TableCell>
                         <div className="font-medium">{u.nomeUser} {u.cognome}</div>
                         <div className="text-xs text-muted-foreground md:hidden">{u.email}</div>
@@ -112,7 +111,6 @@ const Users = () => {
                       <TableCell className="hidden md:table-cell">{u.email}</TableCell>
                       <TableCell className="hidden lg:table-cell text-xs">{u.indirizzoUser}</TableCell>
                       <TableCell className="text-right space-x-2">
-                        {/* ✅ Dialog per Modifica */}
                         <UserFormDialog 
                           user={u} 
                           onSuccess={loadUsers} 

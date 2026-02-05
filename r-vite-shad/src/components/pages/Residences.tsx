@@ -133,7 +133,7 @@ const Residences = () => {
                   {residences.map((residence) => (
                     <TableRow key={residence.id}>
                       <TableCell className="font-mono text-xs text-muted-foreground">
-                        #{residence.id}
+                        {residence.id}
                       </TableCell>
                       <TableCell className="font-medium">
                         {residence.nomeAbitazione}

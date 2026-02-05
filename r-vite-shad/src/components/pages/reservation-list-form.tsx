@@ -142,7 +142,7 @@ const Reservation = () => {
                 {currentItems.length > 0 ? (
                   currentItems.map((res) => (
                     <TableRow key={res.id}>
-                      <TableCell className="font-mono text-xs">#{res.id}</TableCell>
+                      <TableCell className="font-mono text-xs">{res.id}</TableCell>
                       <TableCell>
                         <BadgeLabel color="blue">UID: {res.utenteId}</BadgeLabel>
                       </TableCell>
@@ -178,7 +178,6 @@ const Reservation = () => {
             </Table>
           </div>
 
-          {/* COMPONENTE PAGINATION SHADCN */}
           {totalPages > 1 && (
             <div className="mt-4">
               <Pagination>
@@ -218,7 +217,6 @@ const Reservation = () => {
   );
 };
 
-// Componenti helper per pulizia codice
 const BadgeLabel = ({ children, color }: { children: React.ReactNode, color: 'blue' | 'purple' }) => {
   const styles = color === 'blue' ? "bg-blue-50 text-blue-700 ring-blue-700/10" : "bg-purple-50 text-purple-700 ring-purple-700/10";
   return (

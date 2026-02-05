@@ -2,7 +2,6 @@ import AllSuperHost from "../dashboard/all-super-host";
 import MostPopularAbitazione from "../dashboard/most-popular-abitazione";
 import ResidencesByHostId from "../dashboard/residences-by-hostId";
 import TophostsCard from "../dashboard/Top-hosts-card";
-import { Outlet } from "react-router";
 
 const Homepage = () => {
   return (
@@ -19,7 +18,8 @@ const Homepage = () => {
           </p>
         </section>
 
-        <section className="text-center space-y-4">
+        <section className="flex flex-col gap-3 text-center space-y-4 border-2 rounded-xl">
+          <h2 className="text-3xl font-semibold">Ricerca abitazione per ID Host</h2>
               <ResidencesByHostId/>
         </section>
 
@@ -65,10 +65,7 @@ const Homepage = () => {
           </div>
         </section>
 
-        {/* CONTENUTO DINAMICO */}
-        <section className="bg-muted/30 rounded-2xl p-6">
-          <Outlet />
-        </section>
+        
 
       </main>
     </div>

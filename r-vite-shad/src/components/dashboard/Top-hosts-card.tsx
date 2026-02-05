@@ -23,7 +23,6 @@ const TophostsCard = () => {
         const hostsArray: TopHostsValue[] = Object.entries(data)
           .map(([nome, numero]) => ({ nome, numero: numero as number }))
           .sort((a, b) => b.numero - a.numero)
-        console.log("Top hosts:", hostsArray);
         setTopHost(hostsArray);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Errore sconosciuto");

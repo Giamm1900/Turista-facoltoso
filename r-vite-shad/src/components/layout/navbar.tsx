@@ -12,14 +12,14 @@ export default function Navbar() {
   return (
     <nav className="w-full border-b bg-background">
       <div className="mx-auto flex h-16 items-center justify-between px-4">
-        <div className="p-4">
+        <div className="p-4 mb-4">
         <Link to={"/"} className="text-lg font-semibold"><img 
         src={miologo} 
         alt="Logo Turista" 
         className="h-20 w-20 rounded-full object-cover " 
       /></Link>
     </div>
-        <NavigationMenu className="hidden md:flex">
+        <NavigationMenu className="font-semibold hidden md:flex">
           <NavigationMenuList className="gap-6">
             <NavigationMenuItem>
                 <Link to={"/utenti"}>Users</Link>
@@ -59,6 +59,9 @@ export default function Navbar() {
                 </Link>
                 <Link to={"/Hosts"} className="text-sm font-medium" onClick={() => setOpen(false)}>
                   Hosts
+                </Link>
+                <Link to={"/feedbacks"} className="text-sm font-medium" onClick={() => setOpen(false)}>
+                  Feedbacks
                 </Link>
               </div>
             </SheetContent>
