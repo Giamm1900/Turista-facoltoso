@@ -1,5 +1,6 @@
 import AllSuperHost from "../dashboard/all-super-host";
 import MostPopularAbitazione from "../dashboard/most-popular-abitazione";
+import ResidencesByHostId from "../dashboard/residences-by-hostId";
 import TophostsCard from "../dashboard/Top-hosts-card";
 import { Outlet } from "react-router";
 
@@ -16,6 +17,10 @@ const Homepage = () => {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Analisi in tempo reale delle performance degli host e delle abitazioni più prenotate.
           </p>
+        </section>
+
+        <section className="text-center space-y-4">
+              <ResidencesByHostId/>
         </section>
 
         {/* SEZIONE SUPER HOST */}

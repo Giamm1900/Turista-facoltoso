@@ -47,13 +47,12 @@ const AllSuperHost = () => {
             </Avatar>
             <div>
               <p className="font-bold">{host.name}</p>
-              <Badge variant="outline" className="text-[10px]">PREMIUM HOST</Badge>
+              <Badge variant="outline" className="text-[10px]">SUPER HOST</Badge>
             </div>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>Elite Level</span>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
             </div>
             <span className="text-lg font-black">{host.total} <span className="text-xs font-normal text-muted-foreground">trip</span></span>
           </CardContent>

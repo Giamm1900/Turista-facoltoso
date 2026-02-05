@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert"; // Suggerito
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Badge } from "../ui/badge";
 
 interface TopHostsValue {
   nome: string;
@@ -21,8 +23,6 @@ const TophostsCard = () => {
         const hostsArray: TopHostsValue[] = Object.entries(data)
           .map(([nome, numero]) => ({ nome, numero: numero as number }))
           .sort((a, b) => b.numero - a.numero)
-          .slice(0, 5); 
-
         console.log("Top hosts:", hostsArray);
         setTopHost(hostsArray);
       } catch (err) {
@@ -58,10 +58,18 @@ const TophostsCard = () => {
         >
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Top Host #{index + 1}
+              Top Host {index + 1}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-1">
+            <Avatar>
+              <AvatarFallback className="bg-blue-200">
+                {host.nome.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <Badge variant="outline" className="text-[10px]">HOST</Badge>
+            </div>
             <span className="text-lg font-semibold truncate">{host.nome}</span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold">{host.numero}</span>

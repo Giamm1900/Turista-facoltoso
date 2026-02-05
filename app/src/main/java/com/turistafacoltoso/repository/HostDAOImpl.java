@@ -46,14 +46,14 @@ public class HostDAOImpl implements HostDAO {
     public Map<String, Integer> findTopHostsLastMonth() {
         String sql = "SELECT u.nome_user, u.cognome, COUNT(p.id) as totale_prenotazioni " +
                 "FROM public.host h " +
-                "JOIN public.utente u ON h.id = u.id " + // Assicurati che il join sia corretto h.id = u.id
+                "JOIN public.utente u ON h.id = u.id " + 
                 "JOIN public.abitazione a ON h.id = a.id_host " +
                 "JOIN public.prenotazione p ON a.id = p.abitazione_id " +
                 "WHERE p.data_inizio >= CURRENT_DATE - INTERVAL '1 month' " +
                 "GROUP BY u.nome_user, u.cognome " +
                 "ORDER BY totale_prenotazioni DESC";
 
-        Map<String, Integer> ranking = new LinkedHashMap<>(); // LinkedHashMap mantiene l'ordine del database (DESC)
+        Map<String, Integer> ranking = new LinkedHashMap<>();
 
         try (Connection conn = DataBaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
