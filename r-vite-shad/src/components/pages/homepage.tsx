@@ -20,7 +20,7 @@ const Homepage = () => {
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               Turista Facoltoso
-              <span className="block text-3xl md:text-4xl lg:text-5xl mt-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="block text-3xl md:text-4xl lg:text-5xl mt-2 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 Back-Office
               </span>
             </h1>
