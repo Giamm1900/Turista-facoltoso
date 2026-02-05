@@ -17,9 +17,8 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { Trash, Home, MapPin, Pencil, BotIcon, ChartColumn } from "lucide-react";
+import { Trash, Home, MapPin, Pencil, ChartColumn } from "lucide-react";
 import ResidenceForm from "../forms/residence-form";
-import { Badge } from "../ui/badge";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -90,17 +89,11 @@ const Residences = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Abitazioni</h2>
-          <p className="text-muted-foreground">
-            Gestisci il catalogo delle abitazioni e le loro disponibilità.
-          </p>
-        </div>
-        <ResidenceForm onSuccess={loadResidences} />
-      </div>
 
       <Card>
+      <div className="p-4">
+        <ResidenceForm onSuccess={loadResidences} />
+      </div>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Home className="h-5 w-5" />
