@@ -2,7 +2,7 @@ import AllSuperHost from "../dashboard/all-super-host";
 import MostPopularAbitazione from "../dashboard/most-popular-abitazione";
 import ResidencesByHostId from "../dashboard/residences-by-hostId";
 import TophostsCard from "../dashboard/Top-hosts-card";
-import { Building2, Users, TrendingUp, Award, Trophy, Home, Search } from "lucide-react";
+import { Award, Trophy, Home, Search } from "lucide-react";
 
 const Homepage = () => {
   return (
