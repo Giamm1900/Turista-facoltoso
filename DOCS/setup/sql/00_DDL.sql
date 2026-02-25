@@ -92,4 +92,3 @@ JOIN prenotazione p ON p.abitazione_id = a.id
 GROUP BY h.id, u.nome_user, u.cognome
 HAVING COUNT(p.id) >= 100;
 
-

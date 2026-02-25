@@ -16,7 +16,7 @@ const AllSuperHost = () => {
       try {
         const res = await fetch(`${API_URL}/api/v1/superHosts`);
         if (!res.ok) {
-          throw new Error("errore recupero superhost");
+          throw new Error("errore recupero superhost"+res.status);
         }
         const data = await res.json();
         const transformedData = Object.entries(data).map(([key, value]) => ({
@@ -32,6 +32,24 @@ const AllSuperHost = () => {
     };
     loadSuperUser();
   }, []);
+
+  if (!superHosts) {
+    return (
+      <div className="p-6 space-y-6">
+        <Skeleton className="h-50 w-full" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-8 w-48" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-12 w-full" />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   if (loading) return <Skeleton className="h-40 w-full" />;
 

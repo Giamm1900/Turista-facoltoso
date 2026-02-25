@@ -17,10 +17,9 @@ public class DataBaseConnection {
 
     }
 
-    public static void init(String properties) { // Rimosso il parametro per semplicità, o lascialo se vuoi dinamismo
+    public static void init(String properties) { 
         Properties props = new Properties();
 
-        // Carica il file dalla cartella src/main/resources
         try (InputStream is = DataBaseConnection.class.getClassLoader().getResourceAsStream("config.properties")) {
 
             if (is == null) {
@@ -48,7 +47,6 @@ public class DataBaseConnection {
             throw new RuntimeException("Execute init() first!");
         }
 
-        // Il driverManager me lo prendo dal package di postgresql
         return DriverManager.getConnection(url, user, pwd);
 
     }
