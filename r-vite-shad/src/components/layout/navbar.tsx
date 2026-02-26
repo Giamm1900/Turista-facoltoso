@@ -9,6 +9,13 @@ import miologo from "@/assets/asa5.jpg";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const now = new Date();
+  const formatted = now.toLocaleDateString("it-IT", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const navItems = [
     { path: "/utenti", label: "Users", icon: Users },
@@ -119,6 +126,7 @@ export default function Navbar() {
                     </Link>
                   );
                 })}
+                <span className="text-s text-muted-foreground">Data: {formatted}</span>
               </div>
 
               {/* Mobile Footer */}

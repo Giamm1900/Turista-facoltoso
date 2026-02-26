@@ -30,41 +30,26 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { usePrenotazione } from "../context/rent-provider";
 
-const API_URL = import.meta.env.VITE_API_URL;
 const ITEMS_PER_PAGE = 8; 
 
 const Reservation = () => {
-  const [reservations, setReservations] = useState<Prenotazione[] | null>(null);
+  const { prenotazioni,removePrenotazione,getAll } = usePrenotazione();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
-  const loadReservation = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/v1/prenotazioni`);
-      if (!res.ok) throw new Error("Errore nel recupero delle prenotazioni");
-      const data = await res.json();
-      setReservations(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Errore sconosciuto");
-    }
-  };
-
-  useEffect(() => {
-    loadReservation();
-  }, []);
-
   const filteredReservations = useMemo(() => {
-    if (!reservations) return [];
+    if (!prenotazioni) return [];
     const s = searchTerm.toLowerCase();
-    return reservations.filter(
+    return prenotazioni.filter(
       (res) =>
         res.id?.toString().includes(s) ||
         res.utenteId?.toString().includes(s) ||
         res.abitazioneId?.toString().includes(s),
     );
-  }, [searchTerm, reservations]);
+  }, [searchTerm, prenotazioni]);
 
   const totalPages = Math.ceil(filteredReservations.length / ITEMS_PER_PAGE);
   const currentItems = useMemo(() => {
@@ -77,19 +62,6 @@ const Reservation = () => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Sei sicuro di voler eliminare questa prenotazione?")) return;
-    try {
-      const res = await fetch(`${API_URL}/api/v1/prenotazioni/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Errore durante l'eliminazione");
-      loadReservation();
-    } catch (err) {
-      alert("Errore nell'eliminazione" + err);
-    }
-  };
-
   if (error)
     return (
       <Alert variant="destructive" className="m-6">
@@ -97,7 +69,7 @@ const Reservation = () => {
       </Alert>
     );
 
-  if (!reservations) {
+  if (!prenotazioni) {
     return (
       <div className="p-6 space-y-6">
         <Skeleton className="h-50 w-full" />
@@ -123,7 +95,7 @@ const Reservation = () => {
         <h2 className="text-3xl font-bold tracking-tight">
           Gestione Prenotazioni
         </h2>
-        <PrenotazioneForm onSuccess={loadReservation} />
+        <PrenotazioneForm onSuccess={getAll} />
       </div>
 
       <Card>
@@ -190,7 +162,7 @@ const Reservation = () => {
                         <div className="flex justify-end gap-1">
                           <PrenotazioneForm
                             prenotazione={res}
-                            onSuccess={loadReservation}
+                            onSuccess={getAll}
                             trigger={
                               <Button variant="ghost" size="icon">
                                 <Pencil className="h-4 w-4" />
@@ -200,7 +172,7 @@ const Reservation = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => handleDelete(res.id!)}
+                            onClick={() => removePrenotazione(res.id)}
                             className="h-8 w-8 text-destructive hover:text-destructive"
                           >
                             <Trash className="h-4 w-4" />

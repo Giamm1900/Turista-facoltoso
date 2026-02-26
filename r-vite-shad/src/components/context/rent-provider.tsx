@@ -9,6 +9,7 @@ import {
 
 interface PrenotazioneContextI {
   prenotazioni: Prenotazione[] | null;
+  getAll:()=>Prenotazione[] | undefined;
   addPrenotazione: (prenotazione: Prenotazione) => void;
   getPrenotazioneById: (id: Prenotazione["id"]) => Prenotazione | undefined;
   removePrenotazione: (id: Prenotazione["id"]) => Promise<void>;
@@ -28,6 +29,10 @@ export const usePrenotazione = (): PrenotazioneContextI => {
 
 const RentProvider = ({ children }: { children: ReactNode }) => {
   const [prenotazioni, setPrenotazioni] = useState<Prenotazione[] | null>([]);
+
+  const getAll = ()=>{
+    return prenotazioni || undefined;
+  }
 
   const getPrenotazioneById = (id: Prenotazione["id"]) => {
     return prenotazioni?.find((prenotazione) => prenotazione.id === id);
@@ -76,7 +81,7 @@ const RentProvider = ({ children }: { children: ReactNode }) => {
     loadPrenotazione();
   }, []);
 
-  return (<PrenotazioneContext value={{prenotazioni,getPrenotazioneById,removePrenotazione,addPrenotazione}}>{children}</PrenotazioneContext>);
+  return (<PrenotazioneContext value={{prenotazioni,getAll,getPrenotazioneById,removePrenotazione,addPrenotazione}}>{children}</PrenotazioneContext>);
 };
 
 export default RentProvider;
