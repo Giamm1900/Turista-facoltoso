@@ -134,9 +134,10 @@ const ResidenceForm = ({ residence, onSuccess, trigger }: ResidenceFormProps) =>
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button variant={isEditMode ? "outline" : "default"}>
+          <Button variant={isEditMode ? "outline" : "default"} size={isEditMode ? "sm" : "default"}>
             {isEditMode ? <Pencil className="h-4 w-4 mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
             {isEditMode ? "Modifica" : "Nuova Abitazione"}
+            
           </Button>
         )}
       </DialogTrigger>

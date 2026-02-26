@@ -17,14 +17,14 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { Trash, Home, MapPin, Pencil, ChartColumn } from "lucide-react";
+import { Trash, MapPin, Pencil, ChartColumn } from "lucide-react";
 import ResidenceForm from "../forms/residence-form";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Residences = () => {
   const [residences, setResidences] = useState<Abitazione[] | null>(null);
-  const [mediaPosti,setMediaPosti] = useState<number>(0);
+  const [mediaPosti, setMediaPosti] = useState<number>(0);
 
   useEffect(() => {
     loadResidences();
@@ -51,18 +51,18 @@ const Residences = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const deleteResidence = async (id: number) => {
     if (!confirm("Sei sicuro di voler eliminare questa abitazione?")) return;
-    
+
     try {
       const res = await fetch(`${API_URL}/api/v1/abitazioni/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Errore durante l'eliminazione");
-      
-      setResidences((prev) => prev ? prev.filter(r => r.id !== id) : null);
+
+      setResidences((prev) => (prev ? prev.filter((r) => r.id !== id) : null));
     } catch (error) {
       console.error(error);
       alert("Impossibile eliminare l'abitazione.");
@@ -89,22 +89,19 @@ const Residences = () => {
 
   return (
     <div className="space-y-6">
-
       <Card>
-      <div className="p-4">
-        <ResidenceForm onSuccess={loadResidences} />
-      </div>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Home className="h-5 w-5" />
-            Elenco Abitazioni
-          </CardTitle>
-          <CardDescription>
-            Totale strutture registrate: {residences.length}
-          </CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <div>
+            <CardTitle className="text-2xl">Elenco Abitazioni</CardTitle>
+            <CardDescription>
+              Totale strutture registrate: {residences.length}
+            </CardDescription>
+            <ChartColumn />
+            media posti letto : {mediaPosti}
+          </div>
+          <ResidenceForm onSuccess={loadResidences} />
         </CardHeader>
         <CardContent>
-            <ChartColumn />media posti letto : {mediaPosti}
           {residences.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
               Nessuna abitazione trovata. Inizia creandone una nuova.
@@ -143,7 +140,8 @@ const Residences = () => {
                       </TableCell>
                       <TableCell>
                         <span className="text-xs bg-secondary px-2 py-1 rounded-full">
-                          NLocali: {residence.nlocali} / PostiLetto: {residence.npostiLetto}
+                          NLocali: {residence.nlocali} / PostiLetto:{" "}
+                          {residence.npostiLetto}
                         </span>
                       </TableCell>
                       <TableCell>
@@ -152,18 +150,18 @@ const Residences = () => {
                         </span>
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        <ResidenceForm 
-                          residence={residence} 
-                          onSuccess={loadResidences} 
+                        <ResidenceForm
+                          residence={residence}
+                          onSuccess={loadResidences}
                           trigger={
                             <Button variant="ghost" size="icon">
                               <Pencil className="h-4 w-4" />
                             </Button>
                           }
                         />
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           className="h-8 w-8 text-destructive hover:text-destructive"
                           onClick={() => deleteResidence(residence.id)}
                         >
