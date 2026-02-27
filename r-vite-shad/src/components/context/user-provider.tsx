@@ -20,7 +20,7 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-const useUtente = (): UserContextType => {
+export const useUtente = (): UserContextType => {
   const ctx = useContext(UserContext);
   if (!ctx) {
     throw new Error(
