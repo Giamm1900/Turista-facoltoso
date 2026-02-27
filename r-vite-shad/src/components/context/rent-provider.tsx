@@ -10,9 +10,9 @@ import {
 interface PrenotazioneContextI {
   prenotazioni: Prenotazione[] | null;
   getAll:()=>Prenotazione[] | undefined;
-  addPrenotazione: (prenotazione: Prenotazione) => void;
+  addPrenotazione: (prenotazione: Prenotazione) => Promise<void>;
   getPrenotazioneById: (id: Prenotazione["id"]) => Prenotazione | undefined;
-  removePrenotazione: (id: Prenotazione["id"]) => Promise<void>;
+  removeById: (id: Prenotazione["id"]) => Promise<void>;
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -53,7 +53,7 @@ const RentProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const removePrenotazione = async(id: Prenotazione["id"]) => {
+  const removeById = async(id: Prenotazione["id"]) => {
     try {
       const res = await fetch(`${API_URL}/api/v1/prenotazioni/${id}`, {
         method: "DELETE",
@@ -81,7 +81,7 @@ const RentProvider = ({ children }: { children: ReactNode }) => {
     loadPrenotazione();
   }, []);
 
-  return (<PrenotazioneContext value={{prenotazioni,getAll,getPrenotazioneById,removePrenotazione,addPrenotazione}}>{children}</PrenotazioneContext>);
+  return (<PrenotazioneContext value={{prenotazioni,getAll,getPrenotazioneById,removeById,addPrenotazione}}>{children}</PrenotazioneContext>);
 };
 
 export default RentProvider;
