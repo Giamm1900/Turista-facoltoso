@@ -54,7 +54,7 @@ const AllSuperHost = () => {
   if (loading) return <Skeleton className="h-40 w-full" />;
 
   return (
-    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
+    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6 min-w-2xl"}>
       {superHosts.map((host) => (
         <Card key={host.name} className="border-t-4 border-t-yellow-500">
           <CardHeader className="flex flex-row items-center gap-4">
